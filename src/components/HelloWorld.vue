@@ -94,38 +94,33 @@ export default {
   },
   methods: {
     login () {
-      console.log(this.$auth.options.loginData.url)
-      this.$auth.options.loginData.url = 'oauth/token'
-      this.$auth.options.fetchData.url = 'api/user'
-
       this.$auth.login({
         data: {
           username: 'jianhan@mail.com',
           password: '1984313',
           grant_type: 'password',
-          client_id: 2,
-          client_secret: 'oZvNaNUDTo0qhhLsrALJdIkPxUw2QD9IvPgHKdh7',
+          client_id: this.$env.PASSPORT_CLIENT_ID,
+          client_secret: this.$env.PASSPORT_CLIENT_SECRET,
           scope: ''
         },
-        success: function () {},
-        error: function () {},
-        redirect: '/account',
-        fetchUser: true
-        // etc...
+        success: rsp => {
+          this.$http('api/v1/user').then(rsp => {
+            let user = this.$_.get(rsp, 'data', false)
+            if (user) {
+              localStorage.setItem('user', JSON.stringify(rsp.data))
+            } else {
+            // TODO: handle error
+            }
+          }).catch(err => {
+            // TODO: handle error
+            console.log(err)
+          })
+        },
+        error: (rsp) => {
+          // TODO: handle error
+        },
+        redirect: '/account'
       })
-
-      // this.$http({
-      //   method: 'post',
-      //   url: 'oauth/token',
-      //   data: {
-      //     username: 'jianhan@mail.com',
-      //     password: '1984313',
-      //     grant_type: 'password',
-      //     client_id: 2,
-      //     client_secret: 'oZvNaNUDTo0qhhLsrALJdIkPxUw2QD9IvPgHKdh7',
-      //     scope: ''
-      //   },
-      // })
     }
   }
 }
