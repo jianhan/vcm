@@ -47,7 +47,7 @@ const auth = {
         return false
       }
       if (this.$moment().unix() > localStorage.getItem('expire_at')) {
-        this.logout()
+        this.logout(false)
         return false
       }
       const user = localStorage.getItem('user')

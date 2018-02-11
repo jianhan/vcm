@@ -11,6 +11,8 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import * as env from './.env'
 import auth from '@/mixins/auth'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 // Start to initialize authentication plugins
 Vue.router = router
@@ -27,7 +29,6 @@ let passportAuthDriver = {
     }
   }
 }
-
 var authOptions = {
   auth: passportAuthDriver,
   http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
