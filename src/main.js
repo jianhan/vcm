@@ -10,6 +10,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import * as env from './.env'
+import auth from '@/mixins/auth'
 
 // Start to initialize authentication plugins
 Vue.router = router
@@ -53,12 +54,11 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  mixins: [auth],
   router,
   components: { App },
   template: '<App/>',
   created () {
-    this.$auth.ready(function () {
-      console.log(this) // Will be proper context.
-    })
+    this.initUser()
   }
 })

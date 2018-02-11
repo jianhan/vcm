@@ -1,5 +1,6 @@
 <template>
   <div class="hello">
+    {{ $auth.user() }}
     <h1>{{ msg }}</h1>
     <h2>Essential Links</h2>
     <ul>
@@ -85,42 +86,13 @@
 </template>
 
 <script>
+import auth from '@/mixins/auth'
 export default {
   name: 'HelloWorld',
+  mixins: [auth],
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
-    }
-  },
-  methods: {
-    login () {
-      this.$auth.login({
-        data: {
-          username: 'jianhan@mail.com',
-          password: '1984313',
-          grant_type: 'password',
-          client_id: this.$env.PASSPORT_CLIENT_ID,
-          client_secret: this.$env.PASSPORT_CLIENT_SECRET,
-          scope: ''
-        },
-        success: rsp => {
-          this.$http('api/v1/user').then(rsp => {
-            let user = this.$_.get(rsp, 'data', false)
-            if (user) {
-              localStorage.setItem('user', JSON.stringify(rsp.data))
-            } else {
-            // TODO: handle error
-            }
-          }).catch(err => {
-            // TODO: handle error
-            console.log(err)
-          })
-        },
-        error: (rsp) => {
-          // TODO: handle error
-        },
-        redirect: '/account'
-      })
     }
   }
 }
