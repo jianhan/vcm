@@ -80,6 +80,7 @@
         </a>
       </li>
     </ul>
+    <a @click.prevent="login">Login</a>
   </div>
 </template>
 
@@ -89,6 +90,42 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  methods: {
+    login () {
+      console.log(this.$auth.options.loginData.url)
+      this.$auth.options.loginData.url = 'oauth/token'
+      this.$auth.options.fetchData.url = 'api/user'
+
+      this.$auth.login({
+        data: {
+          username: 'jianhan@mail.com',
+          password: '1984313',
+          grant_type: 'password',
+          client_id: 2,
+          client_secret: 'oZvNaNUDTo0qhhLsrALJdIkPxUw2QD9IvPgHKdh7',
+          scope: ''
+        },
+        success: function () {},
+        error: function () {},
+        redirect: '/account',
+        fetchUser: true
+        // etc...
+      })
+
+      // this.$http({
+      //   method: 'post',
+      //   url: 'oauth/token',
+      //   data: {
+      //     username: 'jianhan@mail.com',
+      //     password: '1984313',
+      //     grant_type: 'password',
+      //     client_id: 2,
+      //     client_secret: 'oZvNaNUDTo0qhhLsrALJdIkPxUw2QD9IvPgHKdh7',
+      //     scope: ''
+      //   },
+      // })
     }
   }
 }
