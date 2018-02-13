@@ -13,6 +13,7 @@ import * as env from './.env'
 import auth from '@/mixins/auth'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import VeeValidate from 'vee-validate'
 
 // Start to initialize authentication plugins
 Vue.router = router
@@ -47,6 +48,7 @@ Vue.use(require('@websanova/vue-auth'), authOptions)
 
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
+Vue.use(VeeValidate)
 Object.defineProperty(Vue.prototype, '$_', { value: _ })
 Object.defineProperty(Vue.prototype, '$moment', { value: moment })
 Object.defineProperty(Vue.prototype, '$env', { value: env })

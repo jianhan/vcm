@@ -19,6 +19,7 @@
     "lodash": "^4.17.5",
     "moment": "^2.20.1",
     "style-loader": "^0.20.1",
+    "vee-validate": "^2.0.3",
     "vue": "^2.5.2",
     "vue-axios": "^2.0.2",
     "vue-router": "^3.0.1",

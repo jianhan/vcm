@@ -1,36 +1,58 @@
 <template>
-  <b-form>
-    <b-form-group description="Enter your email address">
-      <b-form-input type="email"
-                    v-model="form.email"
-                    required
-                    placeholder="Enter your email">
-      </b-form-input>
-    </b-form-group>
-    <b-form-group description="Enter your password">
-      <b-form-input type="password"
-                    v-model="form.password"
-                    required>
-      </b-form-input>
-    </b-form-group>
-    <b-button type="submit" variant="primary">Submit</b-button>
-    <b-button type="reset" variant="danger">Reset</b-button>
-  </b-form>
+  <form data-vv-scope="login-form" @submit.prevent="login">
+    <b-alert :show="hasError" variant="warning">Please make sure all fields are valid.</b-alert>
+    <div class="form-group">
+      <input v-validate="'required|email'"
+             class="form-control"
+             name="email"
+             type="text"
+             placeholder="Email">
+      <small v-show="!errors.has('login-form.email')" class="form-text text-muted">Enter your email address to login.</small>
+      <small v-show="errors.has('login-form.email')" class="form-text text-danger">{{ errors.first('login-form.email') }}</small>
+    </div>
+    <div class="form-group">
+      <input type="password"
+             v-validate="'required'"
+             name="password"
+             class="form-control"
+             placeholder="Enter password">
+      <small v-show="!errors.has('login-form.password')" class="form-text text-muted">Enter your password to login.</small>
+      <small v-show="errors.has('login-form.password')" class="form-text text-danger">{{ errors.first('login-form.password') }}</small>
+    </div>
+    <b-button type="submit" variant="primary" :disabled="errors.any('login-form')">
+      <i class="fas fa-lock"></i> Login
+    </b-button>
+    <b-button type="submit" variant="primary">
+      <i class="fas fa-lock"></i> Login
+    </b-button>
+  </form>
 </template>
 
 <script>
+import auth from '@/mixins/auth'
 export default {
   name: 'Login',
+  mixins: [auth],
   data () {
     return {
       form: {
         email: '',
         password: ''
-      }
+      },
+      loading: false,
+      hasError: false
     }
   },
   methods: {
-
+    login () {
+      this.hasError = false
+      this.$validator.validateScopes('login-form').then((result) => {
+        if (result) {
+          return
+        }
+        this.hasError = true
+      })
+    }
   }
 }
 </script>
