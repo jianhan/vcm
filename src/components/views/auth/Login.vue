@@ -23,7 +23,9 @@
       <small v-show="errors.has('login-form.password')" class="form-text text-danger">{{ errors.first('login-form.password') }}</small>
     </div>
     <b-button type="submit" variant="primary" :disabled="errors.any('login-form')">
-      <i class="fas fa-lock"></i> Login
+      <i class="fas fa-spinner fa-pulse" v-if="loading"></i>
+      <i class="fas fa-lock" v-else></i>
+      Login
     </b-button>
   </form>
 </template>
@@ -57,6 +59,11 @@ export default {
         this.hasError = true
         this.loading = false
       })
+    }
+  },
+  mounted () {
+    if (this.isAuthenticated()) {
+
     }
   }
 }

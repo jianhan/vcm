@@ -1,3 +1,4 @@
+import { isAuthenticated } from '@/auth/auth'
 const auth = {
   data () {
     return {
@@ -20,6 +21,7 @@ const auth = {
             let user = this.$_.get(rsp, 'data', false)
             if (user) {
               localStorage.setItem('user', JSON.stringify(rsp.data))
+              this.persistResponse(rsp)
             } else {
               this.authError = {
                 variant: 'error',
@@ -39,8 +41,7 @@ const auth = {
             variant: 'error',
             message: err.response.data.message
           }
-        },
-        redirect: '/admin/dashboard'
+        }
       })
     },
     persistResponse (rsp) {
@@ -48,33 +49,7 @@ const auth = {
       localStorage.setItem('expire_at', this.$moment().unix() + rsp.data.expires_in)
     },
     isAuthenticated () {
-      if (localStorage.getItem('refresh_token') === null) {
-        return false
-      }
-      if (localStorage.getItem('expire_at') === null) {
-        return false
-      }
-      if (localStorage.getItem('default_auth_token') === null) {
-        return false
-      }
-      if (localStorage.getItem('user') === null) {
-        return false
-      }
-      if (this.$moment().unix() > localStorage.getItem('expire_at')) {
-        this.logout(false)
-        return false
-      }
-      const user = localStorage.getItem('user')
-      return JSON.parse(user)
-    },
-    logout (redirect = true) {
-      localStorage.removeItem('refresh_token')
-      localStorage.removeItem('expire_at')
-      localStorage.removeItem('default_auth_token')
-      localStorage.removeItem('user')
-      if (redirect) {
-        // TODO: redirect
-      }
+      return isAuthenticated()
     },
     initUser () {
       this.$auth.ready(function () {
