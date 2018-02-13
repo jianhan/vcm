@@ -1,6 +1,11 @@
 const auth = {
+  data () {
+    return {
+      authError: null
+    }
+  },
   methods: {
-    login (username, password) {
+    authenticate (username, password) {
       this.$auth.login({
         data: {
           username: username,
@@ -16,15 +21,24 @@ const auth = {
             if (user) {
               localStorage.setItem('user', JSON.stringify(rsp.data))
             } else {
-            // TODO: handle error
+              this.authError = {
+                variant: 'error',
+                message: 'Can not find user'
+              }
             }
           }).catch(err => {
-            // TODO: handle error
             console.log(err)
+            this.authError = {
+              variant: 'error',
+              message: 'System error'
+            }
           })
         },
-        error: (rsp) => {
-          // TODO: handle error
+        error: (err) => {
+          this.authError = {
+            variant: 'error',
+            message: err.response.data.message
+          }
         },
         redirect: '/admin/dashboard'
       })
