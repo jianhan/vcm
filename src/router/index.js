@@ -9,7 +9,7 @@ export default new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/auth',
       name: 'Auth',
       component: Auth,
       children: [

@@ -11,7 +11,7 @@
       </b-collapse>
     </b-navbar>
     <b-row>
-      <b-col>
+      <b-col md="6" offset-md="3" sm="12" style="padding: 10px">
         <router-view></router-view>
       </b-col>
     </b-row>
