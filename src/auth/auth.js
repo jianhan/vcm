@@ -8,19 +8,26 @@ import _ from 'lodash'
 
 export function isAuthenticated () {
   if (localStorage.getItem('refresh_token') === null) {
+    console.log(1)
     return false
   }
   if (localStorage.getItem('expire_at') === null) {
+
+    console.log(2)
     return false
   }
   if (localStorage.getItem('default_auth_token') === null) {
+
+    console.log(3)
     return false
   }
   if (localStorage.getItem('user') === null) {
+    console.log(4, localStorage.getItem('user'))
     return false
   }
   if (moment().unix() > localStorage.getItem('expire_at')) {
-    this.logout(false)
+
+    console.log(5)
     return false
   }
   const user = localStorage.getItem('user')
@@ -52,7 +59,7 @@ export function initAuth () {
       {request: 'Authorization', response: 'Authorization', authType: 'bearer', foundIn: 'header'},
       {request: 'token', response: 'token', authType: 'bearer', foundIn: 'response'}
     ],
-    loginData: {url: 'oauth/token', method: 'POST', redirect: '/admin/dashboard'},
+    loginData: {url: 'oauth/token', method: 'POST'},
     fetchData: {url: 'api/v1/user', method: 'GET', authType: 'bearer'},
     refreshData: {enabled: false},
     rolesVar: 'role_id',

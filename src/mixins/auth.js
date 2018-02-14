@@ -19,19 +19,23 @@ const auth = {
           scope: ''
         },
         success: rsp => {
+          localStorage.setItem('refresh_token', rsp.data.refresh_token)
+          localStorage.setItem('expire_at', this.$moment().unix() + rsp.data.expires_in)
           this.$http('api/v1/user').then(rsp => {
             let user = this.$_.get(rsp, 'data', false)
             if (user) {
               localStorage.setItem('user', JSON.stringify(rsp.data))
-              this.persistResponse(rsp)
+              this.$store.commit(mutationTypes.SET_USER, rsp.data)
+              this.$router.push({name: 'Dashboard'})
             } else {
+              this.clearAuthData()
               this.authError = {
                 variant: 'error',
                 message: 'Can not find user'
               }
             }
           }).catch(err => {
-            console.log(err)
+            this.clearAuthData()
             this.authError = {
               variant: 'error',
               message: 'System error'
@@ -39,6 +43,7 @@ const auth = {
           })
         },
         error: (err) => {
+          this.clearAuthData()
           this.authError = {
             variant: 'error',
             message: err.response.data.message
@@ -46,15 +51,14 @@ const auth = {
         }
       })
     },
-    persistResponse (rsp) {
-      localStorage.setItem('refresh_token', rsp.data.refresh_token)
-      localStorage.setItem('expire_at', this.$moment().unix() + rsp.data.expires_in)
-      this.$store.commit(mutationTypes.SET_USER, rsp.data)
-    },
     isAuthenticated () {
-      return isAuthenticated()
+      const authenticated = isAuthenticated()
+      if (!authenticated) {
+        this.clearAuthData()
+      }
+      return authenticated
     },
-    logout () {
+    clearAuthData () {
       localStorage.removeItem('refresh_token')
       localStorage.removeItem('expire_at')
       localStorage.removeItem('default_auth_token')

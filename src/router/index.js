@@ -42,11 +42,12 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
+    console.log(to, from, isAuthenticated(), store.state)
     if (isAuthenticated()) {
       next()
     } else {
       store.commit('FLASH/SET_FLASH', { message: 'Not authenticated', variant: 'warning' })
-      next({ path: 'auth/login' })
+      next({ name: 'Login' })
     }
   } else {
     next()
