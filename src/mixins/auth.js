@@ -1,4 +1,6 @@
 import { isAuthenticated } from '@/auth/auth'
+import * as mutationTypes from '@/store/mutation-types'
+
 const auth = {
   data () {
     return {
@@ -47,6 +49,7 @@ const auth = {
     persistResponse (rsp) {
       localStorage.setItem('refresh_token', rsp.data.refresh_token)
       localStorage.setItem('expire_at', this.$moment().unix() + rsp.data.expires_in)
+      this.$store.commit(mutationTypes.SET_USER, rsp.data)
     },
     isAuthenticated () {
       return isAuthenticated()
