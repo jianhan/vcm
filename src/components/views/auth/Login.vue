@@ -23,7 +23,7 @@
       <small v-show="!errors.has('login-form.password')" class="form-text text-muted">Enter your password to login.</small>
       <small v-show="errors.has('login-form.password')" class="form-text text-danger">{{ errors.first('login-form.password') }}</small>
     </div>
-    <b-button type="submit" variant="primary" :disabled="errors.any('login-form')">
+    <b-button type="submit" variant="primary" :disabled="errors.any('login-form') || loading">
       <i class="fas fa-spinner fa-pulse" v-if="loading"></i>
       <i class="fas fa-lock" v-else></i>
       Login
