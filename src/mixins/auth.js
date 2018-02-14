@@ -54,11 +54,18 @@ const auth = {
     isAuthenticated () {
       return isAuthenticated()
     },
+    logout () {
+      localStorage.removeItem('refresh_token')
+      localStorage.removeItem('expire_at')
+      localStorage.removeItem('default_auth_token')
+      localStorage.removeItem('user')
+      this.$store.commit(mutationTypes.DELETE_USER)
+    },
     initUser () {
       this.$auth.ready(function () {
         const user = this.isAuthenticated()
         if (user) {
-          this.$auth.user(user)
+          this.$store.commit(mutationTypes.SET_USER, user)
         }
       })
     }
