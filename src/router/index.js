@@ -46,14 +46,6 @@ router.beforeEach((to, from, next) => {
     } else {
       next({ path: 'auth/login' })
     }
-    // if (!store.state.user.isLoggedIn) {
-    //   next({
-    //     path: '/login',
-    //     query: { redirect: to.fullPath }
-    //   })
-    // } else {
-    //   next()
-    // }
   } else {
     next()
   }

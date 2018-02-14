@@ -7244,6 +7244,10 @@ vue@^2.5.2, vue@^2.5.9:
   version "2.5.13"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.5.13.tgz#95bd31e20efcf7a7f39239c9aa6787ce8cf578e1"
 
+vuex-flash@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/vuex-flash/-/vuex-flash-1.0.0.tgz#4bbeb2093d4857ddef45a6c50f10243539acee6e"
+
 vuex@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.0.1.tgz#e761352ebe0af537d4bb755a9b9dc4be3df7efd2"

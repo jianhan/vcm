@@ -63,7 +63,7 @@ export default {
   },
   mounted () {
     if (this.isAuthenticated()) {
-
+      this.$router.replace({name: 'Dashboard'})
     }
   }
 }
