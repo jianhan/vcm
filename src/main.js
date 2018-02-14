@@ -7,45 +7,13 @@ import moment from 'moment'
 import _ from 'lodash'
 import BootstrapVue from 'bootstrap-vue'
 import Vuex from 'vuex'
-import axios from 'axios'
-import VueAxios from 'vue-axios'
 import * as env from './.env'
 import auth from '@/mixins/auth'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VeeValidate from 'vee-validate'
-
-// Start to initialize authentication plugins
-Vue.router = router
-Vue.use(VueAxios, axios)
-Vue.axios.defaults.baseURL = env.PASSPORT_API_URL
-let passportAuthDriver = {
-  request: function (req, token) {
-    this.options.http._setHeaders.call(this, req, {Authorization: 'Bearer ' + token})
-  },
-  response: function (res) {
-    let token = _.get(res, 'data.access_token', false)
-    if (token) {
-      return token
-    }
-  }
-}
-var authOptions = {
-  auth: passportAuthDriver,
-  http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
-  router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
-  token: [
-    {request: 'Authorization', response: 'Authorization', authType: 'bearer', foundIn: 'header'},
-    {request: 'token', response: 'token', authType: 'bearer', foundIn: 'response'}
-  ],
-  loginData: {url: 'oauth/token', method: 'POST', redirect: '/usr/dashboard/dashboard'},
-  fetchData: {url: 'api/v1/user', method: 'GET', authType: 'bearer'},
-  refreshData: {enabled: false},
-  rolesVar: 'role_id',
-  tokenStore: ['localStorage']
-}
-Vue.use(require('@websanova/vue-auth'), authOptions)
-
+import { initAuth } from '@/auth/auth'
+initAuth()
 Vue.use(Vuex)
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate)
