@@ -6,15 +6,17 @@ import router from './router'
 import moment from 'moment'
 import _ from 'lodash'
 import BootstrapVue from 'bootstrap-vue'
-import Vuex from 'vuex'
 import * as env from './.env'
 import auth from '@/mixins/auth'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VeeValidate from 'vee-validate'
 import { initAuth } from '@/auth/auth'
+import store from './store'
+import VuexFlash from 'vuex-flash'
+
+Vue.use(VuexFlash)
 initAuth()
-Vue.use(Vuex)
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate)
 Object.defineProperty(Vue.prototype, '$_', { value: _ })
@@ -29,6 +31,7 @@ new Vue({
   router,
   components: { App },
   template: '<App/>',
+  store,
   created () {
     this.initUser()
   }

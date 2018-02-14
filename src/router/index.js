@@ -5,6 +5,7 @@ import Admin from '@/components/layouts/Admin'
 import Login from '@/components/views/auth/Login'
 import Dashboard from '@/components/views/admin/Dashboard'
 import { isAuthenticated } from '@/auth/auth'
+import store from '@/store'
 
 Vue.use(Router)
 
@@ -44,6 +45,7 @@ router.beforeEach((to, from, next) => {
     if (isAuthenticated()) {
       next()
     } else {
+      store.commit('FLASH/SET_FLASH', { message: 'Not authenticated', variant: 'warning' })
       next({ path: 'auth/login' })
     }
   } else {

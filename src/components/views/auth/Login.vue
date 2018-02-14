@@ -2,6 +2,7 @@
   <form data-vv-scope="login-form" @submit.prevent="login">
     <b-alert :show="hasError" variant="warning">Please make sure all fields are valid.</b-alert>
     <b-alert v-if="authError != null" show variant="warning">{{ authError.message }}</b-alert>
+    <flash-message variant="warning"></flash-message>
     <div class="form-group">
       <input v-validate="'required|email'"
              class="form-control"
