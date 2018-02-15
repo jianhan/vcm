@@ -7,7 +7,9 @@ const state = {
 
 // getters
 const getters = {
-
+  username: state => {
+    return _.get(state, 'user.name', '')
+  }
 }
 
 // actions

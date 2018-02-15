@@ -15,7 +15,7 @@ import { initAuth } from '@/auth/auth'
 import store from './store'
 import VuexFlash from 'vuex-flash'
 
-Vue.use(VuexFlash)
+Vue.use(VuexFlash, { mixin: true })
 initAuth()
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate)

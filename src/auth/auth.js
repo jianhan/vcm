@@ -2,6 +2,8 @@ import moment from 'moment'
 import axios from 'axios'
 import Vue from 'vue'
 import router from '@/router'
+import store from '@/store'
+import * as mutationTypes from '@/store/mutation-types'
 import VueAxios from 'vue-axios'
 import * as env from '@/.env'
 import _ from 'lodash'
@@ -58,4 +60,12 @@ export function initAuth () {
     tokenStore: ['localStorage']
   }
   Vue.use(require('@websanova/vue-auth'), authOptions)
+}
+
+export function clearAuthData () {
+  localStorage.removeItem('refresh_token')
+  localStorage.removeItem('expire_at')
+  localStorage.removeItem('default_auth_token')
+  localStorage.removeItem('user')
+  store.commit(mutationTypes.DELETE_USER)
 }

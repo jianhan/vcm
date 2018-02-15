@@ -1,4 +1,4 @@
-import { isAuthenticated } from '@/auth/auth'
+import { isAuthenticated, clearAuthData } from '@/auth/auth'
 import * as mutationTypes from '@/store/mutation-types'
 
 const auth = {
@@ -28,7 +28,7 @@ const auth = {
               this.$store.commit(mutationTypes.SET_USER, rsp.data)
               this.$router.push({name: 'Dashboard'})
             } else {
-              this.clearAuthData()
+              clearAuthData()
               this.authError = {
                 variant: 'error',
                 message: 'Can not find user'
@@ -36,7 +36,7 @@ const auth = {
             }
           }).catch(err => {
             console.log(err)
-            this.clearAuthData()
+            clearAuthData()
             this.authError = {
               variant: 'error',
               message: 'System error'
@@ -45,7 +45,7 @@ const auth = {
         },
         error: (err) => {
           console.log(err)
-          this.clearAuthData()
+          clearAuthData()
           this.authError = {
             variant: 'error',
             message: err.response.data.message
@@ -56,16 +56,9 @@ const auth = {
     isAuthenticated () {
       const authenticated = isAuthenticated()
       if (!authenticated) {
-        this.clearAuthData()
+        clearAuthData()
       }
       return authenticated
-    },
-    clearAuthData () {
-      localStorage.removeItem('refresh_token')
-      localStorage.removeItem('expire_at')
-      localStorage.removeItem('default_auth_token')
-      localStorage.removeItem('user')
-      this.$store.commit(mutationTypes.DELETE_USER)
     },
     initUser () {
       this.$auth.ready(function () {
@@ -74,6 +67,10 @@ const auth = {
           this.$store.commit(mutationTypes.SET_USER, user)
         }
       })
+    },
+    logout () {
+      clearAuthData()
+      this.$router.push({name: 'Login'})
     }
   }
 }
