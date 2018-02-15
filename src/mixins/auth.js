@@ -35,6 +35,7 @@ const auth = {
               }
             }
           }).catch(err => {
+            console.log(err)
             this.clearAuthData()
             this.authError = {
               variant: 'error',
@@ -43,6 +44,7 @@ const auth = {
           })
         },
         error: (err) => {
+          console.log(err)
           this.clearAuthData()
           this.authError = {
             variant: 'error',

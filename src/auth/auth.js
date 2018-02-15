@@ -8,26 +8,18 @@ import _ from 'lodash'
 
 export function isAuthenticated () {
   if (localStorage.getItem('refresh_token') === null) {
-    console.log(1)
     return false
   }
   if (localStorage.getItem('expire_at') === null) {
-
-    console.log(2)
     return false
   }
   if (localStorage.getItem('default_auth_token') === null) {
-
-    console.log(3)
     return false
   }
   if (localStorage.getItem('user') === null) {
-    console.log(4, localStorage.getItem('user'))
     return false
   }
   if (moment().unix() > localStorage.getItem('expire_at')) {
-
-    console.log(5)
     return false
   }
   const user = localStorage.getItem('user')
