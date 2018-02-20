@@ -2,11 +2,11 @@ import * as moment from 'moment'
 import store from '../store'
 import * as mutationTypes from '../store/mutation-types'
 import {PASSPORT_OAUTH_TOKEN_URL, PASSPORT_CLIENT_ID, PASSPORT_CLIENT_SECRET} from '../.env'
-import { http, errorMsg } from './http'
+import { http, errorMsg } from './http.ts'
 import router from '../router'
 import _ from 'lodash'
 
-export function isAuthenticated () {
+export function isAuthenticated (): boolean{
   if (localStorage.getItem('refresh_token') === null || localStorage.getItem('refresh_token') === '') {
     clearAuthData()
     return false
@@ -62,7 +62,7 @@ export function setAuthData (accessToken, expireAt, refreshToken, user = {}) {
   }
 }
 
-export function requestToken (email, password, scope = '') {
+export function requestToken (email: string, password: string, scope = '') {
   store.commit(mutationTypes.SET_IS_AUTHENTICATING, true)
   http().post(PASSPORT_OAUTH_TOKEN_URL, {
     'grant_type': 'password',
@@ -83,13 +83,11 @@ export function requestToken (email, password, scope = '') {
         store.commit('FLASH/SET_FLASH', { message: 'Welcome', variant: 'success' })
         router.push({name: 'Dashboard'})
       } else {
-        store.commit(mutationTypes.SET_AUTHENTICATION_MSG, { message: 'User not found', variant: 'warning' })
-        store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
+        processFailAuth('User not found', 'warning')
         clearAuthData()
       }
     }).catch(e => {
-      store.commit(mutationTypes.SET_AUTHENTICATION_MSG, { message: errorMsg(e), variant: 'warning' })
-      store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
+      processFailAuth(errorMsg(e), 'warning')
       clearAuthData()
     })
   }).catch(e => {

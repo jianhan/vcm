@@ -1,6 +1,6 @@
 import axios from 'axios'
-import {PASSPORT_API_URL} from '@/.env'
-import { isAuthenticated } from '@/auth/auth.ts'
+import {PASSPORT_API_URL} from '../.env'
+import { isAuthenticated } from '../auth/auth'
 import _ from 'lodash'
 
 export function http () {
@@ -16,8 +16,7 @@ export function http () {
   return instance
 }
 
-export function errorMsg (response, returnRawMessage = false) {
-  console.warn(response)
+export function errorMsg (response: object, returnRawMessage = false): string{
   const status = _.get(response, 'response.status', 0)
   if (status === 400) {
     return 'Bad request, system is unable to process.'
