@@ -1,14 +1,19 @@
-import {SET_USER, DELETE_USER} from '../mutation-types'
+import {SET_USER, DELETE_USER, SET_IS_AUTHENTICATING, SET_AUTHENTICATION_ERR } from '../mutation-types'
 import _ from 'lodash'
 
 const state = {
-  user: null
+  user: null,
+  isAuthenticating: false,
+  authenticationMsg: null
 }
 
 // getters
 const getters = {
   username: state => {
     return _.get(state, 'user.name', '')
+  },
+  hasAuthenticationMsg: state => {
+    return state.authenticationMsg !== null
   }
 }
 
@@ -26,6 +31,24 @@ const mutations = {
   },
   [DELETE_USER] (state) {
     state.user = null
+  },
+  [SET_IS_AUTHENTICATING] (state, value) {
+    if (!_.isBoolean(value)) {
+      console.warn('SET_IS_AUTHENTICATING is not a valid boolean value: ' + value)
+    } else {
+      this.isAuthenticating = value
+    }
+  },
+  [SET_AUTHENTICATION_ERR] (state, value) {
+    if (!_.isObject(value) || !_.isNull(value)) {
+      console.warn('SET_AUTHENTICATION_ERR is not a valid type, must be object or null: ' + value)
+    } else {
+      if (_.get(value, 'message', false) && _.get(value, 'variant', false)) {
+        this.authenticationMsg = value
+        return
+      }
+      console.warn('SET_AUTHENTICATION_ERR is not a valid message : ' + value)
+    }
   }
 }
 

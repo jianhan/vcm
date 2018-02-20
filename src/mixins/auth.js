@@ -1,4 +1,4 @@
-import { isAuthenticated, clearAuthData} from '@/auth/auth'
+import { isAuthenticated, clearAuthData, requestToken } from '@/auth/auth'
 import * as mutationTypes from '@/store/mutation-types'
 
 const auth = {
@@ -9,6 +9,7 @@ const auth = {
   },
   methods: {
     authenticate (username, password) {
+      requestToken(username, password)
       this.$auth.login({
         data: {
           username: username,
