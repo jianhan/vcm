@@ -1,6 +1,7 @@
 <template>
   <form data-vv-scope="login-form" @submit.prevent="login">
     <b-alert :show="hasError" variant="warning">Please make sure all fields are valid.</b-alert>
+    <flash-message variant="danger" autoHide></flash-message>
     <flash-message variant="warning" autoHide></flash-message>
     <flash-message variant="success" autoHide></flash-message>
     <div class="form-group">
