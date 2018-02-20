@@ -2,7 +2,7 @@ import moment from 'moment'
 import store from '@/store'
 import * as mutationTypes from '@/store/mutation-types'
 import {PASSPORT_OAUTH_TOKEN_URL, PASSPORT_CLIENT_ID, PASSPORT_CLIENT_SECRET} from '@/.env'
-import { http } from '@/auth/http'
+import { http, errorMsg } from '@/auth/http'
 import router from '@/router'
 import _ from 'lodash'
 
@@ -68,21 +68,19 @@ export function requestToken (email, password, scope = '') {
         })
       }
     }).catch(e => {
-      const errorMsg = _.get(e, 'response.data.error', 'System error')
       clearAuthData()
       store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
       store.commit(mutationTypes.SET_AUTHENTICATION_MSG, {
         variant: 'warning',
-        message: errorMsg
+        message: errorMsg(e)
       })
     })
   }).catch(e => {
-    const errorMsg = _.get(e, 'response.data.error', 'System error')
     clearAuthData()
     store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
     store.commit(mutationTypes.SET_AUTHENTICATION_MSG, {
       variant: 'warning',
-      message: errorMsg
+      message: errorMsg(e)
     })
   })
 }
