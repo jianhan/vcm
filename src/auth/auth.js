@@ -1,7 +1,8 @@
 import moment from 'moment'
 import store from '@/store'
 import * as mutationTypes from '@/store/mutation-types'
-import {PASSPORT_OAUTH_TOKEN_URL} from '@/.env'
+import {PASSPORT_OAUTH_TOKEN_URL, PASSPORT_CLIENT_ID, PASSPORT_CLIENT_SECRET} from '@/.env'
+import {http} from '@/auth/http'
 
 export function isAuthenticated () {
   if (localStorage.getItem('refresh_token') === null || localStorage.getItem('refresh_token') === '') {
@@ -36,6 +37,19 @@ export function clearAuthData () {
   store.commit(mutationTypes.DELETE_USER)
 }
 
-export function requestToken (username, password) {
+export function requestToken (email, password, scope = '') {
+  http.post(PASSPORT_OAUTH_TOKEN_URL, {
+    params: {
+      'grant_type': 'password',
+      'client_id': PASSPORT_CLIENT_ID,
+      'client_secret': PASSPORT_CLIENT_SECRET,
+      'username': email,
+      'password': password,
+      'scope': scope
+    }
+  }).then(r => {
 
+  }).catch(e => {
+
+  })
 }

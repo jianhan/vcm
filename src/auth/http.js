@@ -2,7 +2,7 @@ import axios from 'axios'
 import {PASSPORT_API_URL} from '@/.env'
 import { isAuthenticated } from '@/auth/auth'
 
-export default function http () {
+export function http () {
   // Set some headers here if there is any
   let headers = {}
   if (isAuthenticated) {
