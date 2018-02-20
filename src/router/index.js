@@ -5,7 +5,7 @@ import Admin from '@/components/layouts/Admin'
 import Login from '@/components/views/auth/Login'
 import Callback from '@/components/views/auth/Callback'
 import Dashboard from '@/components/views/admin/Dashboard'
-import { isAuthenticated } from '@/auth/auth'
+import { isAuthenticated } from '@/auth/auth.ts'
 import store from '@/store'
 
 Vue.use(Router)

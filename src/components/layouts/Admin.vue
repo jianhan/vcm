@@ -31,7 +31,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { clearAuthData } from '@/auth/auth'
+import { clearAuthData } from '@/auth/auth.ts'
 
 export default {
   name: 'admin',

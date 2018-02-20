@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { isAuthenticated, requestToken } from '@/auth/auth'
+import { isAuthenticated, requestToken } from '@/auth/auth.ts'
 
 export default {
   name: 'Login',

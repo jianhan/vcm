@@ -1,9 +1,9 @@
-import moment from 'moment'
-import store from '@/store'
-import * as mutationTypes from '@/store/mutation-types'
-import {PASSPORT_OAUTH_TOKEN_URL, PASSPORT_CLIENT_ID, PASSPORT_CLIENT_SECRET} from '@/.env'
-import { http, errorMsg } from '@/auth/http'
-import router from '@/router'
+import * as moment from 'moment'
+import store from '../store'
+import * as mutationTypes from '../store/mutation-types'
+import {PASSPORT_OAUTH_TOKEN_URL, PASSPORT_CLIENT_ID, PASSPORT_CLIENT_SECRET} from '../.env'
+import { http, errorMsg } from './http'
+import router from '../router'
 import _ from 'lodash'
 
 export function isAuthenticated () {
@@ -23,12 +23,25 @@ export function isAuthenticated () {
     clearAuthData()
     return false
   }
-  if (moment().unix() > localStorage.getItem('expire_at')) {
+  // check expire at
+  const expireAt = localStorage.getItem('expire_at')
+  if (expireAt !== null) {
+    if (moment().unix() > parseInt(expireAt)) {
     clearAuthData()
     return false
   }
+  } else {
+    clearAuthData()
+    return false
+  }
+  // check user
   const user = localStorage.getItem('user')
-  return JSON.parse(user)
+  if (user !== null) {
+    return JSON.parse(user)
+  } else {
+    clearAuthData()
+    return false
+  }
 }
 
 export function clearAuthData () {
@@ -39,12 +52,12 @@ export function clearAuthData () {
   store.commit(mutationTypes.DELETE_USER)
 }
 
-export function setAuthData (accessToken, expireAt, refreshToken, user = false) {
+export function setAuthData (accessToken, expireAt, refreshToken, user = {}) {
   localStorage.setItem('access_token', accessToken)
   localStorage.setItem('expire_at', moment().unix() + expireAt)
   localStorage.setItem('refresh_token', refreshToken)
-  if (user) {
-    localStorage.setItem('user', user)
+  if (!_.isEmpty(user)) {
+    localStorage.setItem('user', JSON.stringify(user))
     store.commit(mutationTypes.SET_USER, user)
   }
 }
@@ -85,7 +98,7 @@ export function requestToken (email, password, scope = '') {
   })
 }
 
-function processFailAuth (message, variant) {
+function processFailAuth (message: string, variant: string) {
   store.commit(mutationTypes.SET_AUTHENTICATION_MSG, { message: message, variant: variant })
   store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
 }
