@@ -11,12 +11,10 @@ import auth from '@/mixins/auth'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import VeeValidate from 'vee-validate'
-import { initAuth } from '@/auth/auth'
 import store from './store'
 import VuexFlash from 'vuex-flash'
 
 Vue.use(VuexFlash, { mixin: true })
-initAuth()
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate)
 Object.defineProperty(Vue.prototype, '$_', { value: _ })

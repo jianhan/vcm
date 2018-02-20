@@ -1,4 +1,4 @@
-import { isAuthenticated, clearAuthData } from '@/auth/auth'
+import { isAuthenticated, clearAuthData} from '@/auth/auth'
 import * as mutationTypes from '@/store/mutation-types'
 
 const auth = {
@@ -15,7 +15,7 @@ const auth = {
           password: password,
           grant_type: 'password',
           client_id: this.$env.PASSPORT_CLIENT_ID,
-          client_secret: this.$env.PASSPORT_CLIENT_SECRET,
+          ealient_secret: this.$env.PASSPORT_CLIENT_SECRET,
           scope: ''
         },
         success: rsp => {

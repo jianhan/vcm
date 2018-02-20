@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Auth from '@/components/layouts/Auth'
 import Admin from '@/components/layouts/Admin'
 import Login from '@/components/views/auth/Login'
+import Callback from '@/components/views/auth/Callback'
 import Dashboard from '@/components/views/admin/Dashboard'
 import { isAuthenticated } from '@/auth/auth'
 import store from '@/store'
@@ -21,6 +22,11 @@ const router = new Router({
           path: 'login',
           name: 'Login',
           component: Login
+        },
+        {
+          path: 'callback',
+          name: 'Callback',
+          component: Callback
         }
       ]
     },
@@ -42,7 +48,6 @@ const router = new Router({
 })
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    console.log(to, from, isAuthenticated(), store.state)
     if (isAuthenticated()) {
       next()
     } else {
