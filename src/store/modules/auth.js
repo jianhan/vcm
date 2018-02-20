@@ -1,4 +1,4 @@
-import {SET_USER, DELETE_USER, SET_IS_AUTHENTICATING, SET_AUTHENTICATION_ERR } from '../mutation-types'
+import { SET_USER, DELETE_USER, SET_IS_AUTHENTICATING, SET_AUTHENTICATION_MSG } from '../mutation-types'
 import _ from 'lodash'
 
 const state = {
@@ -39,15 +39,15 @@ const mutations = {
       this.isAuthenticating = value
     }
   },
-  [SET_AUTHENTICATION_ERR] (state, value) {
+  [SET_AUTHENTICATION_MSG] (state, value) {
     if (!_.isObject(value) || !_.isNull(value)) {
-      console.warn('SET_AUTHENTICATION_ERR is not a valid type, must be object or null: ' + value)
+      console.warn('SET_AUTHENTICATION_MSG is not a valid type, must be object or null: ' + value)
     } else {
       if (_.get(value, 'message', false) && _.get(value, 'variant', false)) {
         this.authenticationMsg = value
         return
       }
-      console.warn('SET_AUTHENTICATION_ERR is not a valid message : ' + value)
+      console.warn('SET_AUTHENTICATION_MSG is not a valid message : ' + value)
     }
   }
 }

@@ -2,7 +2,9 @@ import moment from 'moment'
 import store from '@/store'
 import * as mutationTypes from '@/store/mutation-types'
 import {PASSPORT_OAUTH_TOKEN_URL, PASSPORT_CLIENT_ID, PASSPORT_CLIENT_SECRET} from '@/.env'
-import {http} from '@/auth/http'
+import { http } from '@/auth/http'
+import router from '@/router'
+import _ from 'lodash'
 
 export function isAuthenticated () {
   if (localStorage.getItem('refresh_token') === null || localStorage.getItem('refresh_token') === '') {
@@ -38,18 +40,49 @@ export function clearAuthData () {
 }
 
 export function requestToken (email, password, scope = '') {
-  http.post(PASSPORT_OAUTH_TOKEN_URL, {
-    params: {
-      'grant_type': 'password',
-      'client_id': PASSPORT_CLIENT_ID,
-      'client_secret': PASSPORT_CLIENT_SECRET,
-      'username': email,
-      'password': password,
-      'scope': scope
-    }
-  }).then(r => {
-
+  store.commit(mutationTypes.SET_IS_AUTHENTICATING, true)
+  http().post(PASSPORT_OAUTH_TOKEN_URL, {
+    'grant_type': 'password',
+    'client_id': PASSPORT_CLIENT_ID,
+    'client_secret': PASSPORT_CLIENT_SECRET,
+    'username': email,
+    'password': password,
+    'scope': scope
+  }).then(rsp => {
+    localStorage.setItem('refresh_token', rsp.data.refresh_token)
+    localStorage.setItem('expire_at', moment().unix() + rsp.data.expires_in)
+    http().post('api/v1/user').then(rsp => {
+      store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
+      let user = _.get(rsp, 'data', false)
+      if (user) {
+        localStorage.setItem('user', JSON.stringify(rsp.data))
+        store.commit(mutationTypes.SET_AUTHENTICATION_MSG, null)
+        store.commit(mutationTypes.SET_USER, rsp.data)
+        router.push({name: 'Dashboard'})
+      } else {
+        clearAuthData()
+        store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
+        store.commit(mutationTypes.SET_AUTHENTICATION_MSG, {
+          variant: 'warning',
+          message: 'Can not find user'
+        })
+      }
+    }).catch(e => {
+      const errorMsg = _.get(e, 'response.data.error', 'System error')
+      clearAuthData()
+      store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
+      store.commit(mutationTypes.SET_AUTHENTICATION_MSG, {
+        variant: 'warning',
+        message: errorMsg
+      })
+    })
   }).catch(e => {
-
+    const errorMsg = _.get(e, 'response.data.error', 'System error')
+    clearAuthData()
+    store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
+    store.commit(mutationTypes.SET_AUTHENTICATION_MSG, {
+      variant: 'warning',
+      message: errorMsg
+    })
   })
 }

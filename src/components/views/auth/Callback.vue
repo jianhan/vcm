@@ -4,7 +4,7 @@
 
 <script>
 import _ from 'lodash'
-import clearAuthData from '@/auth/auth'
+import { clearAuthData } from '@/auth/auth'
 import * as mutationTypes from '@/store/mutation-types'
 
 export default {

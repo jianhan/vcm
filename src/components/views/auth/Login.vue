@@ -1,7 +1,6 @@
 <template>
   <form data-vv-scope="login-form" @submit.prevent="login">
     <b-alert :show="hasError" variant="warning">Please make sure all fields are valid.</b-alert>
-    <b-alert v-if="authError != null" show variant="warning">{{ authError.message }}</b-alert>
     <flash-message variant="warning" autoHide></flash-message>
     <flash-message variant="success" autoHide></flash-message>
     <div class="form-group">
@@ -33,10 +32,10 @@
 </template>
 
 <script>
-import auth from '@/mixins/auth'
+import { isAuthenticated, requestToken } from '@/auth/auth'
+
 export default {
   name: 'Login',
-  mixins: [auth],
   data () {
     return {
       form: {
@@ -49,22 +48,11 @@ export default {
   },
   methods: {
     login () {
-      this.loading = true
-      this.hasError = false
-      this.authError = null
-      this.$validator.validateScopes('login-form').then((result) => {
-        if (result) {
-          this.authenticate(this.form.email, this.form.password)
-          this.loading = false
-          return
-        }
-        this.hasError = true
-        this.loading = false
-      })
+      requestToken(this.form.email, this.form.password)
     }
   },
   mounted () {
-    if (this.isAuthenticated()) {
+    if (isAuthenticated()) {
       this.$router.replace({name: 'Dashboard'})
     }
   }
