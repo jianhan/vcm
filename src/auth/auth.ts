@@ -2,11 +2,11 @@ import * as moment from 'moment'
 import store from '../store'
 import * as mutationTypes from '../store/mutation-types'
 import {PASSPORT_OAUTH_TOKEN_URL, PASSPORT_CLIENT_ID, PASSPORT_CLIENT_SECRET} from '../.env'
-import { http, errorMsg } from './http'
+import {http, errorMsg} from './http'
 import router from '../router'
 import _ from 'lodash'
 
-export function isAuthenticated (): boolean{
+export function isAuthenticated(): boolean {
   if (localStorage.getItem('refresh_token') === null || localStorage.getItem('refresh_token') === '') {
     clearAuthData()
     return false
@@ -45,7 +45,7 @@ export function isAuthenticated (): boolean{
   return true
 }
 
-export function clearAuthData () {
+export function clearAuthData() {
   localStorage.removeItem('refresh_token')
   localStorage.removeItem('expire_at')
   localStorage.removeItem('access_token')
@@ -53,7 +53,7 @@ export function clearAuthData () {
   store.commit(mutationTypes.DELETE_USER)
 }
 
-export function setAuthData (accessToken, expireIn, refreshToken, user = {}) {
+export function setAuthData(accessToken, expireIn, refreshToken, user = {}) {
   localStorage.setItem('access_token', accessToken)
   localStorage.setItem('expire_at', moment().unix() + expireIn)
   localStorage.setItem('refresh_token', refreshToken)
@@ -63,7 +63,7 @@ export function setAuthData (accessToken, expireIn, refreshToken, user = {}) {
   }
 }
 
-export function requestToken (email: string, password: string, scope = '') {
+export function requestToken(email: string, password: string, scope = '') {
   store.commit(mutationTypes.SET_IS_AUTHENTICATING, true)
   store.commit(mutationTypes.SET_AUTHENTICATION_MSG, null)
   http().post(PASSPORT_OAUTH_TOKEN_URL, {
@@ -77,12 +77,16 @@ export function requestToken (email: string, password: string, scope = '') {
     const refreshToken = rsp.data.refresh_token
     const expireAt = rsp.data.expires_in
     const accessToken = rsp.data.access_token
-    http().post('api/v1/user').then(rsp => {
+    http().get('api/v1/user', {
+      headers: {
+        Authorization: 'Bearer ' + accessToken
+      }
+    }).then(rsp => {
       store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
       let user = _.get(rsp, 'data', false)
       if (user) {
         setAuthData(accessToken, expireAt, refreshToken, JSON.stringify(rsp.data))
-        store.commit('FLASH/SET_FLASH', { message: 'Welcome', variant: 'success' })
+        store.commit('FLASH/SET_FLASH', {message: 'Welcome', variant: 'success'})
         router.push({name: 'Dashboard'})
       } else {
         processFailAuth('User not found', 'warning')
@@ -98,7 +102,7 @@ export function requestToken (email: string, password: string, scope = '') {
   })
 }
 
-function processFailAuth (message: string, variant: string) {
-  store.commit(mutationTypes.SET_AUTHENTICATION_MSG, { message: message, variant: variant })
+function processFailAuth(message: string, variant: string) {
+  store.commit(mutationTypes.SET_AUTHENTICATION_MSG, {message: message, variant: variant})
   store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
 }
