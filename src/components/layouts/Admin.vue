@@ -31,14 +31,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { clearAuthData } from '@/auth/auth.ts'
+import { clearAuthData, initStore } from '@/auth/auth'
 
 export default {
   name: 'layouts-admin',
   computed: {
-    ...mapGetters([
-      'username'
-    ])
+    ...mapGetters(['username'])
   },
   methods: {
     logout () {
@@ -48,6 +46,7 @@ export default {
     }
   },
   mounted () {
+    initStore()
   }
 }
 </script>

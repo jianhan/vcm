@@ -50,7 +50,7 @@ export function clearAuthData() {
   localStorage.removeItem('expire_at')
   localStorage.removeItem('access_token')
   localStorage.removeItem('user')
-  store.commit(mutationTypes.DELETE_USER)
+  store.commit(mutationTypes.DELETE_USER, null)
 }
 
 export function setAuthData(accessToken, expireIn, refreshToken, user = {}) {
@@ -85,7 +85,7 @@ export function requestToken(email: string, password: string, scope = '') {
       store.commit(mutationTypes.SET_IS_AUTHENTICATING, false)
       let user = _.get(rsp, 'data', false)
       if (user) {
-        setAuthData(accessToken, expireAt, refreshToken, JSON.stringify(rsp.data))
+        setAuthData(accessToken, expireAt, refreshToken, rsp.data)
         store.commit('FLASH/SET_FLASH', {message: 'Welcome', variant: 'success'})
         router.push({name: 'Dashboard'})
       } else {
@@ -100,6 +100,13 @@ export function requestToken(email: string, password: string, scope = '') {
     processFailAuth(errorMsg(e), 'warning')
     clearAuthData()
   })
+}
+
+export function initStore() {
+  if (isAuthenticated()) {
+    const user = String(localStorage.getItem('user'))
+    store.commit(mutationTypes.SET_USER, JSON.parse(user))
+  }
 }
 
 function processFailAuth(message: string, variant: string) {
