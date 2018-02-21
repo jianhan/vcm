@@ -34,7 +34,7 @@ import { mapGetters } from 'vuex'
 import { clearAuthData } from '@/auth/auth.ts'
 
 export default {
-  name: 'admin',
+  name: 'layouts-admin',
   computed: {
     ...mapGetters([
       'username'

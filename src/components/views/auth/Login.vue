@@ -4,6 +4,7 @@
     <flash-message variant="danger" autoHide></flash-message>
     <flash-message variant="warning" autoHide></flash-message>
     <flash-message variant="success" autoHide></flash-message>
+    <b-alert v-if="hasAuthenticationMsg" dismissible show :variant="authenticationMsg.variant">{{ authenticationMsg.message }}</b-alert>
     <div class="form-group">
       <input v-validate="'required|email'"
              class="form-control"
@@ -34,6 +35,7 @@
 
 <script>
 import { isAuthenticated, requestToken } from '@/auth/auth.ts'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
   name: 'Login',
@@ -51,6 +53,15 @@ export default {
     login () {
       requestToken(this.form.email, this.form.password)
     }
+  },
+  computed: {
+    // mix the getters into computed with object spread operator
+    ...mapGetters([
+      'hasAuthenticationMsg'
+    ]),
+    ...mapState({
+      authenticationMsg: state => state.auth.authenticationMsg
+    }),
   },
   mounted () {
     if (isAuthenticated()) {

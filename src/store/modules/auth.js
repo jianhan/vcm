@@ -1,5 +1,6 @@
 import { SET_USER, DELETE_USER, SET_IS_AUTHENTICATING, SET_AUTHENTICATION_MSG } from '../mutation-types'
 import _ from 'lodash'
+import Vue from 'vue'
 
 const state = {
   user: null,
@@ -33,26 +34,15 @@ const mutations = {
     state.user = null
   },
   [SET_IS_AUTHENTICATING] (state, value) {
-    if (!_.isBoolean(value)) {
-      console.warn('SET_IS_AUTHENTICATING is not a valid boolean value: ' + value)
-    } else {
-      this.isAuthenticating = value
-    }
+    state.isAuthenticating = value
   },
   [SET_AUTHENTICATION_MSG] (state, value) {
-    if (!_.isObject(value) || !_.isNull(value)) {
-      console.warn('SET_AUTHENTICATION_MSG is not a valid type, must be object or null: ' + value)
-    } else {
-      if (_.get(value, 'message', false) && _.get(value, 'variant', false)) {
-        this.authenticationMsg = value
-        return
-      }
-      console.warn('SET_AUTHENTICATION_MSG is not a valid message : ' + value)
-    }
+    state.authenticationMsg = value
   }
 }
 
 export default {
+  namespace: true,
   state,
   getters,
   actions,
