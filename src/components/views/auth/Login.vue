@@ -4,7 +4,11 @@
     <flash-message variant="danger" autoHide></flash-message>
     <flash-message variant="warning" autoHide></flash-message>
     <flash-message variant="success" autoHide></flash-message>
-    <b-alert v-if="hasAuthenticationMsg" dismissible show :variant="authenticationMsg.variant">{{ authenticationMsg.message }}</b-alert>
+    <b-alert v-if="hasAuthenticationMsg"
+             dismissible
+             show
+             :variant="authenticationMsg.variant"
+             @dismissed="dismissMsg">{{ authenticationMsg.message }}</b-alert>
     <div class="form-group">
       <input v-validate="'required|email'"
              class="form-control"
@@ -25,8 +29,8 @@
       <small v-show="!errors.has('login-form.password')" class="form-text text-muted">Enter your password to login.</small>
       <small v-show="errors.has('login-form.password')" class="form-text text-danger">{{ errors.first('login-form.password') }}</small>
     </div>
-    <b-button type="submit" variant="primary" :disabled="errors.any('login-form') || loading">
-      <i class="fas fa-spinner fa-pulse" v-if="loading"></i>
+    <b-button type="submit" variant="primary" :disabled="errors.any('login-form') || isAuthenticating">
+      <i class="fas fa-spinner fa-pulse" v-if="isAuthenticating"></i>
       <i class="fas fa-lock" v-else></i>
       Login
     </b-button>
@@ -36,6 +40,7 @@
 <script>
 import { isAuthenticated, requestToken } from '@/auth/auth.ts'
 import { mapGetters, mapState } from 'vuex'
+import { SET_AUTHENTICATION_MSG, SET_IS_AUTHENTICATING } from '@/store/mutation-types'
 
 export default {
   name: 'Login',
@@ -52,6 +57,9 @@ export default {
   methods: {
     login () {
       requestToken(this.form.email, this.form.password)
+    },
+    dismissMsg () {
+      this.$store.commit(SET_AUTHENTICATION_MSG, null)
     }
   },
   computed: {
@@ -60,13 +68,16 @@ export default {
       'hasAuthenticationMsg'
     ]),
     ...mapState({
-      authenticationMsg: state => state.auth.authenticationMsg
-    }),
+      authenticationMsg: state => state.auth.authenticationMsg,
+      isAuthenticating: state => state.auth.isAuthenticating
+    })
   },
   mounted () {
     if (isAuthenticated()) {
       this.$router.replace({name: 'Dashboard'})
+      return
     }
+    this.$store.commit(SET_IS_AUTHENTICATING, false)
   }
 }
 </script>
