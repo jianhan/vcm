@@ -56,7 +56,11 @@ export default {
   },
   methods: {
     login () {
-      requestToken(this.form.email, this.form.password)
+      this.$validator.validateScopes('login-form').then((result) => {
+        if (result) {
+          requestToken(this.form.email, this.form.password)
+        }
+      })
     },
     dismissMsg () {
       this.$store.commit(SET_AUTHENTICATION_MSG, null)
