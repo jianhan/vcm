@@ -46,6 +46,8 @@ export default {
       this.flash({ message: 'You have been logged out', variant: 'success' })
       this.$router.push({name: 'Login'})
     }
+  },
+  mounted () {
   }
 }
 </script>

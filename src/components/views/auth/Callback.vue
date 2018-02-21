@@ -4,8 +4,8 @@
 
 <script>
 import _ from 'lodash'
-import { clearAuthData } from '@/auth/auth.ts'
-import * as mutationTypes from '@/store/mutation-types'
+import { clearAuthData, setAuthData } from '@/auth/auth'
+import { http } from '@/auth/http'
 
 export default {
   name: 'callback',
@@ -17,22 +17,16 @@ export default {
   mounted () {
     const accessToken = _.get(this.$route.query, 'access_token', false)
     const refreshToken = _.get(this.$route.query, 'refresh_token', false)
-    const expireIn = _.get(this.$route.query, 'expire_in', false)
-    if (!accessToken || !refreshToken || !expireIn) {
-      localStorage.setItem('default_auth_token', accessToken)
-      localStorage.setItem('refresh_token', refreshToken)
-      localStorage.setItem('expire_at', this.$moment().unix() + expireIn)
-      this.$http({
-        method: 'GET',
-        url: 'api/v1/user',
+    const expiresIn = _.get(this.$route.query, 'expires_in', false)
+    if (accessToken && refreshToken && expiresIn) {
+      http().get('api/v1/user', {
         headers: {
           Authorization: 'Bearer ' + accessToken
         }
       }).then(rsp => {
         let user = this.$_.get(rsp, 'data', false)
         if (user) {
-          localStorage.setItem('user', JSON.stringify(rsp.data))
-          this.$store.commit(mutationTypes.SET_USER, rsp.data)
+          setAuthData(accessToken, expiresIn, refreshToken, user)
           this.$router.push({name: 'Dashboard'})
         } else {
           this.error = _.get(rsp, 'response.data.message', 'System error')

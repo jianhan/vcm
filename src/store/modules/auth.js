@@ -1,6 +1,5 @@
 import { SET_USER, DELETE_USER, SET_IS_AUTHENTICATING, SET_AUTHENTICATION_MSG } from '../mutation-types'
 import _ from 'lodash'
-import Vue from 'vue'
 
 const state = {
   user: null,

@@ -27,21 +27,22 @@ export function isAuthenticated (): boolean{
   const expireAt = localStorage.getItem('expire_at')
   if (expireAt !== null) {
     if (moment().unix() > parseInt(expireAt)) {
-    clearAuthData()
-    return false
-  }
+      clearAuthData()
+      return false
+    }
   } else {
     clearAuthData()
     return false
   }
+
   // check user
   const user = localStorage.getItem('user')
-  if (user !== null) {
-    return JSON.parse(user)
-  } else {
+  if (user === null) {
     clearAuthData()
     return false
   }
+
+  return true
 }
 
 export function clearAuthData () {
@@ -52,9 +53,9 @@ export function clearAuthData () {
   store.commit(mutationTypes.DELETE_USER)
 }
 
-export function setAuthData (accessToken, expireAt, refreshToken, user = {}) {
+export function setAuthData (accessToken, expireIn, refreshToken, user = {}) {
   localStorage.setItem('access_token', accessToken)
-  localStorage.setItem('expire_at', moment().unix() + expireAt)
+  localStorage.setItem('expire_at', moment().unix() + expireIn)
   localStorage.setItem('refresh_token', refreshToken)
   if (!_.isEmpty(user)) {
     localStorage.setItem('user', JSON.stringify(user))
