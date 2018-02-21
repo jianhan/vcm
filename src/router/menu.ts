@@ -1,4 +1,3 @@
-import routes from './routes'
 import _ from 'lodash'
 
 class AdminMenu {
@@ -6,17 +5,24 @@ class AdminMenu {
   title: string
   icon: string
   order: number
+  children: Array<AdminMenu>
 
   constructor(routeName: string, title: string, icon: string, order = 0) {
     this.routeName = routeName
     this.title = title
     this.icon = icon
     this.order = order
+    this.children = new Array()
+  }
+
+  setChildre(children: Array<AdminMenu>) {
+    this.children = children
   }
 }
 
-export function generateMenuList(): Array<AdminMenu> {
+export function generateMenuList(routes): Array<AdminMenu> {
   let returnVal: AdminMenu[] = new Array()
+  if (!routes) return returnVal
   for (let i = 0; i <= routes.length; i++) {
     if (_.get(routes[i], 'meta.adminMenu', false)) {
       const children = _.get(routes[i], 'children', false)
@@ -27,7 +33,10 @@ export function generateMenuList(): Array<AdminMenu> {
           const menuIcon = _.get(children[j], 'meta.menuIcon', '')
           const menuOrder = _.get(children[j], 'meta.menuOrder', 0)
           if (routeName && menuTitle) {
-            returnVal.push(new AdminMenu(routeName, menuTitle, menuIcon, menuOrder))
+            let adminMenu = new AdminMenu(routeName, menuTitle, menuIcon, menuOrder)
+            let sChildren = _.get(children[j],'children', false)
+            adminMenu.setChildre(generateMenuList(sChildren))
+            returnVal.push(adminMenu)
           }
         }
       }

@@ -33,6 +33,7 @@
 import { mapGetters } from 'vuex'
 import { clearAuthData, initStore } from '@/auth/auth'
 import { generateMenuList } from '@/router/menu'
+import routes from '@/router/routes'
 
 export default {
   name: 'layouts-admin',
@@ -48,7 +49,7 @@ export default {
   },
   mounted () {
     initStore()
-    generateMenuList()
+    console.log(generateMenuList(routes))
   }
 }
 </script>
