@@ -4,7 +4,7 @@ import Callback from '@/components/views/auth/Callback'
 import Dashboard from '@/components/views/admin/Dashboard'
 import Login from '@/components/views/auth/Login'
 import Courses from '@/components/views/admin/Courses'
-import Course from '@/components/views/admin/Course'
+import UpsertCourse from '@/components/views/admin/UpsertCourse'
 
 const routes = [
   {
@@ -49,8 +49,22 @@ const routes = [
           requiresAuth: true,
           menuOrder: 2,
           menuTitle: 'Courses',
-          menuIcon: 'fas fa-tachometer-alt'
-        }
+          menuIcon: 'far fa-bookmark'
+        },
+        children: [
+          {
+            path: 'upsert-course/:id?',
+            name: 'UpsertCourse',
+            component: UpsertCourse,
+            meta: {
+              requiresAuth: true,
+              menuOrder: 1,
+              menuTitle: 'Course',
+              menuIcon: 'fas fa-tachometer-alt'
+            }
+          }
+
+        ]
       }
     ]
   }
