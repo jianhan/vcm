@@ -52,6 +52,7 @@ export default {
   mounted () {
     initStore()
     this.menus = generateMenuList(routes)
+    console.log(this.menus)
   }
 }
 </script>
