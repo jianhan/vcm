@@ -7,6 +7,7 @@
                  :show="hasAlert"
                  @dismissed="dismissAlert">
           {{ alert.message }}
+          <validation-errors :validationErrors="vErrors"></validation-errors>
         </b-alert>
       </b-col>
     </b-row>
@@ -67,12 +68,15 @@ import {http, errorMsg} from '@/auth/http'
 import {VueEditor} from 'vue2-editor'
 import {dateTimePickerFormat} from '@/constants'
 import alertMixin from '@/mixins/alert'
+import validationErrorsMixin from '@/mixins/validation-errors'
+import validationErrors from '@/components/validation-errors'
 
 export default {
   name: 'upsert-course-form',
-  mixins: [alertMixin],
+  mixins: [alertMixin, validationErrorsMixin],
   components: {
-    VueEditor
+    VueEditor,
+    validationErrors
   },
   data () {
     return {
@@ -97,12 +101,18 @@ export default {
   },
   methods: {
     upsertCourse () {
+      this.dismissAlert()
       http().post('courses', {
         ...this.course
       }).then(r => {
 
       }).catch(e => {
-        this.setAlert(errorMsg(e, true), 'danger')
+        if (e.response.data.status_code !== 422) {
+          this.setAlert(errorMsg(e, true), 'danger')
+        } else {
+          this.setAlert('Validation errors, please check your input', 'danger')
+          this.setVErrors(e.response.data.errors)
+        }
       })
       console.log(this.course)
     }
