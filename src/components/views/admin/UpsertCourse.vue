@@ -8,8 +8,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
-import {http} from '@/auth/http'
 import UpsertCourseForm from './UpsertCourseForm'
 
 export default {
@@ -25,20 +23,9 @@ export default {
     }
   },
   mounted () {
-    const id = this.$route.params.id
-    if (!_.isUndefined(id)) {
-      http().get('api/courses/' + id)
-        .then(r => {
-
-        })
-        .catch(e => {
-
-        })
-    }
   },
   methods: {
-    onSubmit () {
-    }
+
   }
 }
 </script>

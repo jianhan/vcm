@@ -1,5 +1,15 @@
 <template>
-  <b-form @submit.prevent="onSubmit">
+  <b-form @submit.prevent="upsertCourse">
+    <b-row v-if="hasAlert">
+      <b-col>
+        <b-alert :variant="alert.variant"
+                 dismissible
+                 :show="hasAlert"
+                 @dismissed="dismissAlert">
+          {{ alert.message }}
+        </b-alert>
+      </b-col>
+    </b-row>
     <b-row>
       <b-col>
         <b-form-group label="Name<code>*</code>" label-for="name" description="Enter the name of the course.">
@@ -14,10 +24,10 @@
     </b-row>
     <b-row>
       <b-col>
-        <b-form-group label="Visible<code>*</code>">
+        <b-form-group label="Visible">
           <b-form-checkbox v-model="course.visible"
                            value="1"
-                           unchecked-value="not_accepted">
+                           unchecked-value="0">
             Set Course Visible
           </b-form-checkbox>
         </b-form-group>
@@ -47,25 +57,28 @@
                   description="Description of course will displayed at frontend.">
       <vue-editor v-model="course.description"></vue-editor>
     </b-form-group>
-    <b-button type="submit" variant="primary">Submit</b-button>
-    <b-button type="reset" variant="defaul">Cancel</b-button>
+    <b-button type="submit" variant="success">Submit</b-button>
+    <b-button type="reset" :to="{name: 'Courses'}">Cancel</b-button>
   </b-form>
 </template>
 
 <script>
-import {http} from '@/auth/http'
+import {http, errorMsg} from '@/auth/http'
 import {VueEditor} from 'vue2-editor'
 import {dateTimePickerFormat} from '@/constants'
+import alertMixin from '@/mixins/alert'
 
 export default {
   name: 'upsert-course-form',
+  mixins: [alertMixin],
   components: {
     VueEditor
   },
   data () {
     return {
-      course: {},
-      date: null,
+      course: {
+        visible: 1
+      },
       dateTimePickerFormat: {}
     }
   },
@@ -81,6 +94,18 @@ export default {
         })
     }
     this.dateTimePickerFormat = dateTimePickerFormat
+  },
+  methods: {
+    upsertCourse () {
+      http().post('courses', {
+        ...this.course
+      }).then(r => {
+
+      }).catch(e => {
+        this.setAlert(errorMsg(e, true), 'danger')
+      })
+      console.log(this.course)
+    }
   }
 }
 </script>

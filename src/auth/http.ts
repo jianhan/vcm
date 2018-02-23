@@ -17,17 +17,18 @@ export function http () {
 }
 
 export function errorMsg (response: object, returnRawMessage = false): string{
-  const status = _.get(response, 'response.status', 0)
+  const status = _.get(response, 'response.data.status_code', 0)
+  const message = _.get(response, 'response.data.message', '')
   if (status === 400) {
-    return 'Bad request, system is unable to process.'
+    return returnRawMessage ? message :'Bad request, system is unable to process.'
   } else if (status === 422) {
-    return 'Validation error, please check your input.'
+    return returnRawMessage ? message : 'Validation error, please check your input.'
   } else if (status === 401) {
-    return 'Unauthorized, unable to process the request.'
+    return returnRawMessage ? message : 'Unauthorized, unable to process the request.'
   } else if (status === 405) {
-    return 'Invalid request method, please contact administrator.'
+    return returnRawMessage ? message : 'Invalid request method, please contact administrator.'
   } else if (status === 500) {
-    return 'Internal server error, please contact administrator'
+    return returnRawMessage ? message : 'Internal server error, please contact administrator'
   }
   return 'Unknown errors, please contact administrator'
 }
