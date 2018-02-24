@@ -66,7 +66,6 @@
 <script>
 import {http, errorMsg} from '@/auth/http'
 import {VueEditor} from 'vue2-editor'
-import {dateTimePickerFormat} from '@/constants'
 import alertMixin from '@/mixins/alert'
 import validationErrorsMixin from '@/mixins/validation-errors'
 import validationErrors from '@/components/validation-errors'
@@ -79,6 +78,9 @@ export default {
   components: {
     VueEditor,
     validationErrors
+  },
+  props: {
+    'title': String
   },
   data () {
     return {
@@ -98,6 +100,7 @@ export default {
       http().get('/courses/' + this.$route.params.id)
         .then(r => {
           this.course = r.data
+          this.$emit('update:title', 'Edit Course')
         })
         .catch(e => {
         })
