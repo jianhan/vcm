@@ -71,6 +71,7 @@ import alertMixin from '@/mixins/alert'
 import validationErrorsMixin from '@/mixins/validation-errors'
 import validationErrors from '@/components/validation-errors'
 import slugify from 'slugify'
+import {DateTime} from 'luxon'
 
 export default {
   name: 'upsert-course-form',
@@ -93,17 +94,15 @@ export default {
     }
   },
   mounted () {
-    const id = this.$route.params.id
-    if (!this.$_.isUndefined(id)) {
-      http().get('api/courses/' + id)
+    if (!this.$_.isUndefined(this.$route.params.id)) {
+      http().get('/courses/' + this.$route.params.id)
         .then(r => {
-
+          this.course = r.data
         })
         .catch(e => {
-
         })
     }
-    this.dateTimePickerFormat = dateTimePickerFormat
+    this.dateTimePickerFormat = DateTime.DATETIME_MED
   },
   methods: {
     upsertCourse () {
@@ -120,7 +119,6 @@ export default {
           this.setVErrors(e.response.data.errors)
         }
       })
-      console.log(this.course)
     }
   }
 }

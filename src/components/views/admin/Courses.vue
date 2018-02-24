@@ -4,7 +4,7 @@
       <b-nav-item :to="{ name: 'Courses' }">Courses</b-nav-item>
       <b-nav-item :to="{ name: 'UpsertCourse' }">Add</b-nav-item>
     </b-nav>
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 
