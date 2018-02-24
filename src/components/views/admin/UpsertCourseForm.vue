@@ -70,6 +70,7 @@ import {dateTimePickerFormat} from '@/constants'
 import alertMixin from '@/mixins/alert'
 import validationErrorsMixin from '@/mixins/validation-errors'
 import validationErrors from '@/components/validation-errors'
+import slugify from 'slugify'
 
 export default {
   name: 'upsert-course-form',
@@ -84,6 +85,11 @@ export default {
         visible: 1
       },
       dateTimePickerFormat: {}
+    }
+  },
+  watch: {
+    'course.name' (newVal) {
+      this.course.slug = slugify(newVal)
     }
   },
   mounted () {

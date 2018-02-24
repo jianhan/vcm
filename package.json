@@ -19,6 +19,7 @@
     "lodash": "^4.17.5",
     "luxon": "^0.5.3",
     "moment": "^2.20.1",
+    "slugify": "^1.2.9",
     "style-loader": "^0.20.1",
     "ts-loader": "^3.5.0",
     "typescript": "^2.7.2",

@@ -1,6 +1,6 @@
 <template>
   <ul class="validationError">
-    <li v-for="err, key in validationErrors">
+    <li v-for="(err, key) in validationErrors" v-bind:key="key">
       <strong>{{ key }}</strong> {{ err[0] }}
     </li>
   </ul>
