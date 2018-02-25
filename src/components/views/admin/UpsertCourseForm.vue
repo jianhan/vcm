@@ -14,7 +14,7 @@
     <b-row>
       <b-col>
         <b-form-group label="Name<code>*</code>" label-for="name" description="Enter the name of the course.">
-          <b-form-input type="text" v-model="course.name" required placeholder="Enter email"></b-form-input>
+          <b-form-input type="text" v-model="course.name" required placeholder="Enter name of course"></b-form-input>
         </b-form-group>
       </b-col>
       <b-col>
@@ -38,6 +38,7 @@
       <b-col>
         <b-form-group label="Start Date Time<code>*</code>" label-for="Start Date Time"
                       description="Start date time of the course.">
+          {{ course.start }}
           <datetime type="datetime"
                     :format="dateTimePickerFormat"
                     input-class="form-control"
@@ -47,6 +48,7 @@
       <b-col>
         <b-form-group label="End Date Time<code>*</code>" label-for="End Date Time"
                       description="End date time of the course.">
+          {{ course.end }}
           <datetime type="datetime"
                     :format="dateTimePickerFormat"
                     input-class="form-control"
@@ -110,10 +112,17 @@ export default {
   methods: {
     upsertCourse () {
       this.dismissAlert()
-      http().post('courses', {
-        ...this.course
-      }).then(r => {
-
+      let httpRsp = null
+      if (this.$_.isUndefined(this.course.id)) {
+        httpRsp = http().post('courses', {
+          ...this.course
+        })
+      } else {
+        httpRsp = http().put('courses/' + this.course.id, {
+          ...this.course
+        })
+      }
+      httpRsp.then(r => {
       }).catch(e => {
         if (e.response.data.status_code !== 422) {
           this.setAlert(errorMsg(e, true), 'danger')

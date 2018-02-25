@@ -15,6 +15,7 @@ const validationErrors = {
     },
     dismissAlert () {
       this.alert = {}
+      this.vErrors = {}
     }
   }
 }
