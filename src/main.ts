@@ -1,6 +1,7 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
+import VueProgressBar from 'vue-progressbar'
 import App from './App.vue'
 import router from './router'
 import * as moment from 'moment';
@@ -24,8 +25,23 @@ Vue.use(VuexFlash, { mixin: true })
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate)
 // Use v-calendar, v-date-picker & v-popover components
-Vue.use(VCalendar);
+Vue.use(VCalendar)
 Vue.use(Datetime)
+const options = {
+  color: '#bffaf3',
+  failedColor: '#874b4b',
+  thickness: '5px',
+  transition: {
+    speed: '0.2s',
+    opacity: '0.6s',
+    termination: 300
+  },
+  autoRevert: true,
+  inverse: false
+}
+
+Vue.use(VueProgressBar, options)
+
 Object.defineProperty(Vue.prototype, '$_', { value: _ })
 Object.defineProperty(Vue.prototype, '$moment', { value: moment })
 Object.defineProperty(Vue.prototype, '$env', { value: env })

@@ -34,7 +34,6 @@
       <b-col>
         <b-form-group label="Start Date Time<code>*</code>" label-for="Start Date Time"
                       description="Start date time of the course.">
-          {{ course.start }}
           <datetime type="datetime"
                     :format="dateTimePickerFormat"
                     input-class="form-control"
@@ -44,7 +43,6 @@
       <b-col>
         <b-form-group label="End Date Time<code>*</code>" label-for="End Date Time"
                       description="End date time of the course.">
-          {{ course.end }}
           <datetime type="datetime"
                     :format="dateTimePickerFormat"
                     input-class="form-control"
@@ -120,7 +118,7 @@ export default {
       }
       httpRsp.then(r => {
         this.flash({ message: 'Course has been updated', variant: 'success' })
-        this.$router.push({name: 'Courses'})
+        this.$router.push({name: 'ListCourses'})
       }).catch(e => {
         if (e.response.data.status_code !== 422) {
           this.setAlert(errorMsg(e, true), 'danger')

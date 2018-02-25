@@ -4,6 +4,7 @@ import Callback from '@/components/views/auth/Callback'
 import Dashboard from '@/components/views/admin/Dashboard'
 import Login from '@/components/views/auth/Login'
 import Courses from '@/components/views/admin/Courses'
+import ListCourses from '@/components/views/admin/ListCourses'
 import UpsertCourse from '@/components/views/admin/UpsertCourse'
 
 const routes = [
@@ -28,7 +29,10 @@ const routes = [
     path: '/admin',
     name: 'Admin',
     component: Admin,
-    meta: {requiresAuth: true, adminMenu: true},
+    meta: {
+      requiresAuth: true,
+      adminMenu: true,
+    },
     children: [
       {
         path: 'dashboard',
@@ -53,6 +57,17 @@ const routes = [
         },
         children: [
           {
+            path: 'list-courses',
+            name: 'ListCourses',
+            component: ListCourses,
+            meta: {
+              requiresAuth: true,
+              menuOrder: 1,
+              menuTitle: 'List Courses',
+              menuIcon: 'fas fa-tachometer-alt'
+            }
+          },
+          {
             path: 'upsert-course/:id?',
             name: 'UpsertCourse',
             component: UpsertCourse,
@@ -63,7 +78,6 @@ const routes = [
               menuIcon: 'fas fa-tachometer-alt'
             }
           }
-
         ]
       }
     ]
