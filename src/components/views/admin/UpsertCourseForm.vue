@@ -26,11 +26,7 @@
     <b-row>
       <b-col>
         <b-form-group label="Visible">
-          <b-form-checkbox v-model="course.visible"
-                           value="1"
-                           unchecked-value="0">
-            Set Course Visible
-          </b-form-checkbox>
+          <input type="checkbox" aria-label="Checkbox for following text input" v-model="course.visible" value="1">
         </b-form-group>
       </b-col>
     </b-row>
@@ -123,6 +119,8 @@ export default {
         })
       }
       httpRsp.then(r => {
+        this.flash({ message: 'Course has been updated', variant: 'success' })
+        this.$router.push({name: 'Courses'})
       }).catch(e => {
         if (e.response.data.status_code !== 422) {
           this.setAlert(errorMsg(e, true), 'danger')
