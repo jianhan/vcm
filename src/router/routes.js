@@ -31,7 +31,7 @@ const routes = [
     component: Admin,
     meta: {
       requiresAuth: true,
-      adminMenu: true,
+      adminMenu: true
     },
     children: [
       {
