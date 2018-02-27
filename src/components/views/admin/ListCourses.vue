@@ -3,7 +3,7 @@
     <flash-message variant="success"></flash-message>
     <vuetable ref="vuetable"
               api-url="http://courses-management.localhost/api/v1/courses"
-              :fields="['name', 'email', 'birthdate']"
+              :fields="fields"
               :http-options="authHeader"
     ></vuetable>
   </div>
@@ -18,6 +18,28 @@ export default {
   mixins: [authMixin],
   components: {
     Vuetable
+  },
+  data () {
+    return {
+      fields: [
+        'name',
+        'slug',
+        {
+          name: 'visible',
+          callback: 'formatBoolean'
+        },
+        'start',
+        'end',
+        'created_at',
+        'updated_at'
+      ]
+    }
+  },
+  methods: {
+    formatBoolean (val) {
+      return val
+    }
+
   }
 }
 </script>

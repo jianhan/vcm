@@ -36,3 +36,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  html {
+    font-size: 12.5px;
+  }
+</style>
