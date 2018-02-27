@@ -23,7 +23,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 sync(store, router)
 Vue.use(VuexFlash, { mixin: true })
 Vue.use(BootstrapVue)
-Vue.use(VeeValidate)
+Vue.use(VeeValidate, {fieldsBagName: 'formFields'})
 // Use v-calendar, v-date-picker & v-popover components
 Vue.use(VCalendar)
 Vue.use(Datetime)
