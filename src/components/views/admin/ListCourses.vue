@@ -1,7 +1,6 @@
 <template>
   <div>
     <flash-message variant="success"></flash-message>
-    asdf
     <vuetable ref="vuetable"
               api-url="http://courses-management.localhost/api/v1/courses"
               :fields="fields"
@@ -9,15 +8,13 @@
               pagination-path=""
               @vuetable:pagination-data="onPaginationData"
     ></vuetable>
-    <vuetable-pagination ref="pagination"
-                         @vuetable-pagination:change-page="onChangePage"
-    ></vuetable-pagination>
+    <pagination ref="pagination" @vuetable-pagination:change-page="onChangePage" />
   </div>
 </template>
 
 <script>
 import Vuetable from 'vuetable-2/src/components/Vuetable'
-import VuetablePagination from 'vuetable-2/src/components/VuetablePagination'
+import Pagination from '@/components/pagination'
 import authMixin from '@/mixins/auth'
 
 export default {
@@ -25,7 +22,7 @@ export default {
   mixins: [authMixin],
   components: {
     Vuetable,
-    VuetablePagination
+    Pagination,
   },
   data () {
     return {
