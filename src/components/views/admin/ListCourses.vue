@@ -22,7 +22,7 @@ export default {
   mixins: [authMixin],
   components: {
     Vuetable,
-    Pagination,
+    Pagination
   },
   data () {
     return {

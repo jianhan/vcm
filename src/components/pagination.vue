@@ -1,46 +1,43 @@
 <template>
-  <div v-show="tablePagination && tablePagination.last_page > 1" :class="css.wrapperClass">
-    <a @click="loadPage(1)"
-       :class="['btn-nav', css.linkClass, isOnFirstPage ? css.disabledClass : '']">
-      <i v-if="css.icons.first != ''" :class="[css.icons.first]"></i>
-      <span v-else>&laquo;</span>
-    </a>
-    <a @click="loadPage('prev')"
-       :class="['btn-nav', css.linkClass, isOnFirstPage ? css.disabledClass : '']">
-      <i v-if="css.icons.next != ''" :class="[css.icons.prev]"></i>
-      <span v-else>&nbsp;&lsaquo;</span>
-    </a>
-    <template v-if="notEnoughPages">
-      <template v-for="n in totalPage">
-        <a @click="loadPage(n)"
-           :class="[css.pageClass, isCurrentPage(n) ? css.activeClass : '']"
-           v-html="n">
+  <nav aria-label="Page navigation example" v-show="tablePagination && tablePagination.last_page > 1">
+    <ul class="pagination">
+      <li class="page-item">
+        <a @click="loadPage(1)"
+           :class="['btn-nav', css.linkClass, isOnFirstPage ? css.disabledClass : '']" class="page-link">
+          First
         </a>
-      </template>
-    </template>
-    <template v-else>
-      <template v-for="n in windowSize">
-        <a @click="loadPage(windowStart+n-1)"
-           :class="[css.pageClass, isCurrentPage(windowStart+n-1) ? css.activeClass : '']"
-           v-html="windowStart+n-1">
+      </li>
+      <li class="page-item">
+        <a @click="loadPage('prev')"
+           :class="['btn-nav', css.linkClass, isOnFirstPage ? css.disabledClass : '']" class="page-link">
+          Previous
         </a>
+      </li>
+      <template v-if="notEnoughPages">
+        <li class="page-item" v-for="n in totalPage" v-bind:key="n">
+          <a @click="loadPage(n)"
+             :class="[css.pageClass, isCurrentPage(n) ? css.activeClass : '']"
+             class="page-link"
+             v-html="n">
+          </a>
+        </li>
       </template>
-    </template>
-    <a @click="loadPage('next')"
-       :class="['btn-nav', css.linkClass, isOnLastPage ? css.disabledClass : '']">
-      <i v-if="css.icons.next != ''" :class="[css.icons.next]"></i>
-      <span v-else>&rsaquo;&nbsp;</span>
-    </a>
-    <a @click="loadPage(totalPage)"
-       :class="['btn-nav', css.linkClass, isOnLastPage ? css.disabledClass : '']">
-      <i v-if="css.icons.last != ''" :class="[css.icons.last]"></i>
-      <span v-else>&raquo;</span>
-    </a>
-  </div>
+      <template v-else>
+        <li class="page-item" v-for="n in windowSize" v-bind:key="n">
+          <a @click="loadPage(windowStart+n-1)"
+             :class="[css.pageClass, isCurrentPage(windowStart+n-1) ? css.activeClass : '']"
+             class="page-link"
+             v-html="windowStart+n-1">
+          </a>
+        </li>
+      </template>
+    </ul>
+  </nav>
 </template>
 
 <script>
 import PaginationMixin from 'vuetable-2/src/components/VuetablePaginationMixin'
+
 export default {
   name: 'pagination',
   mixins: [PaginationMixin]

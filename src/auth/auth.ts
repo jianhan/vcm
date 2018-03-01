@@ -77,7 +77,7 @@ export function requestToken(email: string, password: string, scope = '') {
     const refreshToken = rsp.data.refresh_token
     const expireAt = rsp.data.expires_in
     const accessToken = rsp.data.access_token
-    http().get('api/v1/user', {
+    http().get('user', {
       headers: {
         Authorization: 'Bearer ' + accessToken
       }
