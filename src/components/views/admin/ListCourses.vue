@@ -34,7 +34,10 @@ export default {
           name: 'visible',
           callback: 'formatBoolean'
         },
-        'start',
+        {
+          name: 'start',
+          callback: 'formatDate'
+        },
         'end',
         'created_at',
         'updated_at'
