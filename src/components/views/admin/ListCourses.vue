@@ -28,31 +28,44 @@ export default {
   data () {
     return {
       fields: [
-        'name',
-        'slug',
+        {
+          name: 'name',
+          title: 'Name',
+          sortField: 'name'
+        },
+        {
+          name: 'slug',
+          title: 'Slug',
+          sortField: 'slug'
+        },
         {
           name: 'visible',
           title: 'Visible',
+          sortField: 'visible',
           callback: 'formatBoolean'
         },
         {
           name: 'start',
           title: 'Start',
+          sortField: 'start',
           callback: 'formatDate'
         },
         {
           name: 'end',
           title: 'End',
+          sortField: 'end',
           callback: 'formatDate'
         },
         {
           name: 'updated_at',
           title: 'Last Updated',
+          sortField: 'updated_at',
           callback: 'formatDate'
         },
         {
           name: 'created_at',
           title: 'Created',
+          sortField: 'created_at',
           callback: 'formatDate'
         }
       ]
