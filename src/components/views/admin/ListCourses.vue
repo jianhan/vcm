@@ -32,15 +32,29 @@ export default {
         'slug',
         {
           name: 'visible',
+          title: 'Visible',
           callback: 'formatBoolean'
         },
         {
           name: 'start',
+          title: 'Start',
           callback: 'formatDate'
         },
-        'end',
-        'created_at',
-        'updated_at'
+        {
+          name: 'end',
+          title: 'End',
+          callback: 'formatDate'
+        },
+        {
+          name: 'updated_at',
+          title: 'Last Updated',
+          callback: 'formatDate'
+        },
+        {
+          name: 'created_at',
+          title: 'Created',
+          callback: 'formatDate'
+        }
       ]
     }
   },
