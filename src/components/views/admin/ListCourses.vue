@@ -9,7 +9,8 @@
               pagination-path=""
               @vuetable:pagination-data="onPaginationData"
     ></vuetable>
-    <pagination ref="pagination" @vuetable-pagination:change-page="onChangePage" />
+    <vuetable-pagination-info ref="paginationInfo" pagination-path=""/>
+    <pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"/>
   </div>
 </template>
 
@@ -18,13 +19,15 @@ import Vuetable from 'vuetable-2/src/components/Vuetable'
 import Pagination from '@/components/pagination'
 import authMixin from '@/mixins/auth'
 import datatableCallbacks from '@/mixins/datatable-callbacks'
+import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
 
 export default {
   name: 'admin-list-courses',
   mixins: [authMixin, datatableCallbacks],
   components: {
     Vuetable,
-    Pagination
+    Pagination,
+    VuetablePaginationInfo
   },
   data () {
     return {
@@ -80,6 +83,7 @@ export default {
   methods: {
     onPaginationData (paginationData) {
       this.$refs.pagination.setPaginationData(paginationData)
+      this.$refs.paginationInfo.setPaginationData(paginationData)
     },
     onChangePage (page) {
       this.$refs.vuetable.changePage(page)
