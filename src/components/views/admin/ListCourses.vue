@@ -5,6 +5,7 @@
               api-url="http://courses-management.localhost/api/v1/courses"
               :fields="fields"
               :http-options="authHeader"
+              :css="css"
               pagination-path=""
               @vuetable:pagination-data="onPaginationData"
     ></vuetable>
@@ -27,6 +28,11 @@ export default {
   },
   data () {
     return {
+      css: {
+        ascendingIcon: 'fas fa-long-arrow-alt-up',
+        descendingIcon: 'fas fa-long-arrow-alt-down',
+        tableClass: 'table'
+      },
       fields: [
         {
           name: 'name',
