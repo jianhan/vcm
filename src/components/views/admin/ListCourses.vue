@@ -16,10 +16,11 @@
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import Pagination from '@/components/pagination'
 import authMixin from '@/mixins/auth'
+import datatableCallbacks from '@/mixins/datatable-callbacks'
 
 export default {
   name: 'admin-list-courses',
-  mixins: [authMixin],
+  mixins: [authMixin, datatableCallbacks],
   components: {
     Vuetable,
     Pagination
@@ -41,9 +42,6 @@ export default {
     }
   },
   methods: {
-    formatBoolean (val) {
-      return val
-    },
     onPaginationData (paginationData) {
       this.$refs.pagination.setPaginationData(paginationData)
     },
