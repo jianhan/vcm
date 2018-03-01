@@ -2,13 +2,24 @@
   <div>
     <flash-message variant="success"></flash-message>
     <vuetable ref="vuetable"
-              api-url="http://courses-management.localhost/api/v1/courses"
+              :api-url="apiUrl"
               :fields="fields"
               :http-options="authHeader"
               :css="css"
               pagination-path=""
               @vuetable:pagination-data="onPaginationData"
-    ></vuetable>
+    >
+      <template slot="actions" scope="props">
+        <div class="custom-actions">
+          <b-button size="sm" variant="info" @click="onClickEdit(props.rowData, props.rowIndex)">
+            <i class="fas fa-edit"></i>
+          </b-button>
+          <b-button size="sm" variant="danger">
+            <i class="fas fa-trash"></i>
+          </b-button>
+        </div>
+      </template>
+    </vuetable>
     <vuetable-pagination-info ref="paginationInfo" pagination-path=""/>
     <pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"/>
   </div>
@@ -20,6 +31,7 @@ import Pagination from '@/components/pagination'
 import authMixin from '@/mixins/auth'
 import datatableCallbacks from '@/mixins/datatable-callbacks'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
+import {PASSPORT_API_URL} from '@/.env'
 
 export default {
   name: 'admin-list-courses',
@@ -28,6 +40,11 @@ export default {
     Vuetable,
     Pagination,
     VuetablePaginationInfo
+  },
+  computed: {
+    apiUrl: () => {
+      return PASSPORT_API_URL+'courses'
+    }
   },
   data () {
     return {
@@ -76,6 +93,12 @@ export default {
           title: 'Created',
           sortField: 'created_at',
           callback: 'formatDate'
+        },
+        {
+          name: '__slot:actions',
+          title: 'Actions',
+          titleClass: 'center aligned',
+          dataClass: 'center aligned'
         }
       ]
     }
@@ -87,6 +110,9 @@ export default {
     },
     onChangePage (page) {
       this.$refs.vuetable.changePage(page)
+    },
+    onClickEdit (data, index) {
+      this.$router.push({name: 'UpsertCourse', params: { id: data.id }})
     }
   }
 }
