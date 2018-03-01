@@ -106,7 +106,10 @@ export default {
   },
   watch: {
     'course.name' (newVal) {
-      this.course.slug = slugify(newVal)
+      this.course.slug = slugify(newVal, {
+        replacement: '-',
+        lower: true
+      })
     }
   },
   mounted () {
