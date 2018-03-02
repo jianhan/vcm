@@ -133,6 +133,7 @@ export default {
     },
     onClickDelete (data, index) {
       http().delete('courses/' + data.id).then(r => {
+        this.setAlert('Course has been deleted', 'success')
         this.$refs.vuetable.refresh()
       }).catch(e => {
         this.setAlert(e.response.data.message, 'danger')
