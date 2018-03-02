@@ -1,8 +1,7 @@
 <template>
   <div @click="onClick">
     <div class="inline field">
-      <label>Name: </label>
-      <span>{{rowData.name}}</span>
+      <span v-html="rowData.description"/>
     </div>
   </div>
 </template>
