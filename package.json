@@ -29,6 +29,7 @@
     "vue-axios": "^2.0.2",
     "vue-class-component": "^6.2.0",
     "vue-datetime": "^1.0.0-beta.3",
+    "vue-events": "^3.1.0",
     "vue-js-modal": "^1.3.12",
     "vue-progressbar": "^0.7.3",
     "vue-property-decorator": "^6.0.0",

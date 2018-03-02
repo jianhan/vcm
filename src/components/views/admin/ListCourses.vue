@@ -8,6 +8,7 @@
              @dismissed="dismissAlert">
       {{ alert.message }}
     </b-alert>
+    <filter-bar></filter-bar>
     <vuetable ref="vuetable"
               :api-url="apiUrl"
               :fields="fields"
@@ -17,6 +18,7 @@
               @vuetable:pagination-data="onPaginationData"
               detail-row-component="course-details-row"
               @vuetable:cell-clicked="onCellClicked"
+              :append-params="searchParams"
     >
 
       <template slot="actions" slot-scope="props">
@@ -46,7 +48,11 @@ import {PASSPORT_API_URL} from '@/.env'
 import CourseDetailsRow from './CourseDetailsRow'
 import {http} from '@/auth/Http'
 import alert from '@/mixins/Alert'
+import FilterBar from './CourseListFilterBar'
+import VueEvents from 'vue-events'
 
+Vue.use(VueEvents)
+Vue.component('filter-bar', FilterBar)
 Vue.component('course-details-row', CourseDetailsRow)
 
 export default {
@@ -56,7 +62,8 @@ export default {
     Vuetable,
     Pagination,
     VuetablePaginationInfo,
-    CourseDetailsRow
+    CourseDetailsRow,
+    FilterBar
   },
   computed: {
     apiUrl: () => {
@@ -115,7 +122,8 @@ export default {
           titleClass: 'center aligned',
           dataClass: 'center aligned'
         }
-      ]
+      ],
+      searchParams: {}
     }
   },
   methods: {
@@ -142,7 +150,21 @@ export default {
           this.setAlert(e.response.data.message, 'danger')
         })
       }
+    },
+    onFilterSet (filterText) {
+      this.searchParams = {
+        'filter': filterText
+      }
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
+    },
+    onFilterReset () {
+      this.searchParams = {}
+      Vue.nextTick(() => this.$refs.vuetable.refresh())
     }
+  },
+  mounted () {
+    this.$events.$on('filter-set', eventData => this.onFilterSet(eventData))
+    this.$events.$on('filter-reset', e => this.onFilterReset())
   }
 }
 </script>
