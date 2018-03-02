@@ -61,6 +61,16 @@ export default {
       },
       fields: [
         {
+          name: '__checkbox',
+          titleClass: 'center aligned',
+          dataClass: 'center aligned'
+        },
+        {
+          name: 'id',
+          title: '#',
+          sortField: 'id'
+        },
+        {
           name: 'name',
           title: 'Name',
           sortField: 'name'
