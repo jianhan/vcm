@@ -23,7 +23,7 @@ import 'vue-datetime/dist/vue-datetime.css'
 
 
 sync(store, router)
-Vue.use(VModal)
+Vue.use(VModal,{ dialog: true })
 Vue.use(VuexFlash, { mixin: true })
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate, {fieldsBagName: 'formFields'})

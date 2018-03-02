@@ -31,6 +31,7 @@
       </template>
     </vuetable>
     <pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"/>
+    <v-dialog/>
   </div>
 </template>
 
@@ -132,12 +133,15 @@ export default {
       this.$refs.vuetable.toggleDetailRow(data.id)
     },
     onClickDelete (data, index) {
-      http().delete('courses/' + data.id).then(r => {
-        this.setAlert('Course has been deleted', 'success')
-        this.$refs.vuetable.refresh()
-      }).catch(e => {
-        this.setAlert(e.response.data.message, 'danger')
-      })
+      const confirmVal = confirm('Are you sure to delete the course')
+      if (confirmVal) {
+        http().delete('courses/' + data.id).then(r => {
+          this.setAlert('Course has been deleted', 'success')
+          this.$refs.vuetable.refresh()
+        }).catch(e => {
+          this.setAlert(e.response.data.message, 'danger')
+        })
+      }
     }
   }
 }
