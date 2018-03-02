@@ -20,16 +20,16 @@
         </div>
       </template>
     </vuetable>
-    <vuetable-pagination-info ref="paginationInfo" pagination-path="meta.pagination"/>
+    <vuetable-pagination-info ref="paginationInfo"/>
     <pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"/>
   </div>
 </template>
 
 <script>
 import Vuetable from 'vuetable-2/src/components/Vuetable'
-import Pagination from '@/components/pagination'
-import authMixin from '@/mixins/auth'
-import datatableCallbacks from '@/mixins/datatable-callbacks'
+import Pagination from '@/components/Pagination'
+import authMixin from '@/mixins/Auth'
+import datatableCallbacks from '@/mixins/DatatableCallbacks'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
 import {PASSPORT_API_URL} from '@/.env'
 
@@ -80,18 +80,6 @@ export default {
           name: 'end',
           title: 'End',
           sortField: 'end',
-          callback: 'formatDate'
-        },
-        {
-          name: 'updated_at',
-          title: 'Last Updated',
-          sortField: 'updated_at',
-          callback: 'formatDate'
-        },
-        {
-          name: 'created_at',
-          title: 'Created',
-          sortField: 'created_at',
           callback: 'formatDate'
         },
         {

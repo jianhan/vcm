@@ -28,7 +28,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { clearAuthData, initStore } from '@/auth/auth'
+import { clearAuthData, initStore } from '@/auth/Auth'
 import { generateMenuList } from '@/router/menu'
 import routes from '@/router/routes'
 

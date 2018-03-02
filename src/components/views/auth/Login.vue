@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { isAuthenticated, requestToken } from '@/auth/auth.ts'
+import { isAuthenticated, requestToken } from '@/auth/Auth.ts'
 import { mapGetters, mapState } from 'vuex'
 import { SET_AUTHENTICATION_MSG, SET_IS_AUTHENTICATING } from '@/store/mutation-types'
 

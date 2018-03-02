@@ -2,7 +2,7 @@ import * as moment from 'moment'
 import store from '../store'
 import * as mutationTypes from '../store/mutation-types'
 import {PASSPORT_OAUTH_TOKEN_URL, PASSPORT_CLIENT_ID, PASSPORT_CLIENT_SECRET} from '../.env'
-import {http, errorMsg} from './http'
+import {http, errorMsg} from './Http'
 import router from '../router'
 import _ from 'lodash'
 

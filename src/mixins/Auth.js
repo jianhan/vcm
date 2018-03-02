@@ -1,4 +1,4 @@
-import {isAuthenticated} from '@/auth/auth'
+import {isAuthenticated} from '@/auth/Auth'
 
 const authMixin = {
   computed: {

@@ -75,11 +75,11 @@
 </template>
 
 <script>
-import {http, errorMsg} from '@/auth/http'
+import {http, errorMsg} from '@/auth/Http'
 import {VueEditor} from 'vue2-editor'
-import alertMixin from '@/mixins/alert'
-import validationErrorsMixin from '@/mixins/validation-errors'
-import validationErrors from '@/components/validation-errors'
+import alertMixin from '@/mixins/Alert'
+import validationErrorsMixin from '@/mixins/ValidationErrors'
+import validationErrors from '@/components/ValidationErrors'
 import slugify from 'slugify'
 import {DateTime} from 'luxon'
 import {RadarSpinner} from 'epic-spinners'

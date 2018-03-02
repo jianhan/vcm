@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {PASSPORT_API_URL} from '../.env'
-import { isAuthenticated } from '../auth/auth'
+import { isAuthenticated } from './Auth'
 import _ from 'lodash'
 
 export function http () {

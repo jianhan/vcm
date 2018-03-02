@@ -4,8 +4,8 @@
 
 <script>
 import _ from 'lodash'
-import { clearAuthData, setAuthData } from '@/auth/auth'
-import { http } from '@/auth/http'
+import { clearAuthData, setAuthData } from '@/auth/Auth'
+import { http } from '@/auth/Http'
 
 export default {
   name: 'callback',
