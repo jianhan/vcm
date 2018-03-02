@@ -6,10 +6,10 @@
               :fields="fields"
               :http-options="authHeader"
               :css="css"
-              pagination-path=""
+              pagination-path="meta.pagination"
               @vuetable:pagination-data="onPaginationData"
     >
-      <template slot="actions" scope="props">
+      <template slot="actions" slot-scope="props">
         <div class="custom-actions">
           <b-button size="sm" variant="info" @click="onClickEdit(props.rowData, props.rowIndex)">
             <i class="fas fa-edit"></i>
@@ -20,7 +20,7 @@
         </div>
       </template>
     </vuetable>
-    <vuetable-pagination-info ref="paginationInfo" pagination-path=""/>
+    <vuetable-pagination-info ref="paginationInfo" pagination-path="meta.pagination"/>
     <pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"/>
   </div>
 </template>
@@ -43,7 +43,7 @@ export default {
   },
   computed: {
     apiUrl: () => {
-      return PASSPORT_API_URL+'courses'
+      return PASSPORT_API_URL + 'courses'
     }
   },
   data () {

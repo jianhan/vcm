@@ -69,7 +69,7 @@
         <vue-editor v-model="course.description"></vue-editor>
       </b-form-group>
       <b-button type="submit" variant="success">Submit</b-button>
-      <b-button type="reset" :to="{name: 'Courses'}">Cancel</b-button>
+      <b-button type="reset" :to="{name: 'ListCourses'}">Cancel</b-button>
     </template>
   </b-form>
 </template>
@@ -117,7 +117,7 @@ export default {
       this.loading = true
       http().get('/courses/' + this.$route.params.id)
         .then(r => {
-          this.course = r.data
+          this.course = r.data.data
           this.$emit('update:title', 'Edit Course')
           this.loading = false
         })
