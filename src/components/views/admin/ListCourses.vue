@@ -1,6 +1,13 @@
 <template>
   <div>
     <flash-message variant="success"></flash-message>
+    <b-alert :variant="alert.variant"
+             dismissible
+             :show="hasAlert"
+             auto
+             @dismissed="dismissAlert">
+      {{ alert.message }}
+    </b-alert>
     <vuetable ref="vuetable"
               :api-url="apiUrl"
               :fields="fields"
@@ -17,8 +24,8 @@
           <b-button size="sm" variant="info" @click="onClickEdit(props.rowData, props.rowIndex)">
             <i class="fas fa-edit"></i>
           </b-button>
-          <b-button size="sm" variant="danger">
-            <i class="fas fa-trash"></i>
+          <b-button size="sm" variant="danger" @click="onClickDelete(props.rowData, props.rowIndex)">
+            <i class="fas fa-trash"/>
           </b-button>
         </div>
       </template>
@@ -36,11 +43,14 @@ import datatableCallbacks from '@/mixins/DatatableCallbacks'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
 import {PASSPORT_API_URL} from '@/.env'
 import CourseDetailsRow from './CourseDetailsRow'
+import {http} from '@/auth/Http'
+import alert from '@/mixins/Alert'
+
 Vue.component('course-details-row', CourseDetailsRow)
 
 export default {
   name: 'admin-list-courses',
-  mixins: [authMixin, datatableCallbacks],
+  mixins: [authMixin, datatableCallbacks, alert],
   components: {
     Vuetable,
     Pagination,
@@ -116,11 +126,17 @@ export default {
       this.$refs.vuetable.changePage(page)
     },
     onClickEdit (data, index) {
-      this.$router.push({name: 'UpsertCourse', params: { id: data.id }})
+      this.$router.push({name: 'UpsertCourse', params: {id: data.id}})
     },
     onCellClicked (data, field, event) {
-      console.log('cellClicked: ', field.name)
       this.$refs.vuetable.toggleDetailRow(data.id)
+    },
+    onClickDelete (data, index) {
+      http().delete('courses/' + data.id).then(r => {
+        this.$refs.vuetable.refresh()
+      }).catch(e => {
+        this.setAlert(e.response.data.message, 'danger')
+      })
     }
   }
 }

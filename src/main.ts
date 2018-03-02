@@ -17,10 +17,13 @@ import { sync } from 'vuex-router-sync'
 import VCalendar from 'v-calendar';
 import 'v-calendar/lib/v-calendar.min.css'
 import Datetime from 'vue-datetime'
+import VModal from 'vue-js-modal'
 // You need a specific loader for CSS files
 import 'vue-datetime/dist/vue-datetime.css'
 
+
 sync(store, router)
+Vue.use(VModal)
 Vue.use(VuexFlash, { mixin: true })
 Vue.use(BootstrapVue)
 Vue.use(VeeValidate, {fieldsBagName: 'formFields'})

@@ -12,7 +12,7 @@
     </b-navbar>
     <b-row>
       <b-col md="6" offset-md="3" sm="12" style="padding: 10px">
-        <router-view></router-view>
+        <router-view :key="$route.fullPath"></router-view>
       </b-col>
     </b-row>
   </b-container>

@@ -22,7 +22,7 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
   </b-container>
 </template>
 
