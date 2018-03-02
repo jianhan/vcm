@@ -8,7 +8,10 @@
               :css="css"
               pagination-path="meta.pagination"
               @vuetable:pagination-data="onPaginationData"
+              detail-row-component="course-details-row"
+              @vuetable:cell-clicked="onCellClicked"
     >
+
       <template slot="actions" slot-scope="props">
         <div class="custom-actions">
           <b-button size="sm" variant="info" @click="onClickEdit(props.rowData, props.rowIndex)">
@@ -20,18 +23,20 @@
         </div>
       </template>
     </vuetable>
-    <vuetable-pagination-info ref="paginationInfo"/>
     <pagination ref="pagination" @vuetable-pagination:change-page="onChangePage"/>
   </div>
 </template>
 
 <script>
+import Vue from 'vue'
 import Vuetable from 'vuetable-2/src/components/Vuetable'
 import Pagination from '@/components/Pagination'
 import authMixin from '@/mixins/Auth'
 import datatableCallbacks from '@/mixins/DatatableCallbacks'
 import VuetablePaginationInfo from 'vuetable-2/src/components/VuetablePaginationInfo'
 import {PASSPORT_API_URL} from '@/.env'
+import CourseDetailsRow from './CourseDetailsRow'
+Vue.component('course-details-row', CourseDetailsRow)
 
 export default {
   name: 'admin-list-courses',
@@ -39,7 +44,8 @@ export default {
   components: {
     Vuetable,
     Pagination,
-    VuetablePaginationInfo
+    VuetablePaginationInfo,
+    CourseDetailsRow
   },
   computed: {
     apiUrl: () => {
@@ -94,13 +100,17 @@ export default {
   methods: {
     onPaginationData (paginationData) {
       this.$refs.pagination.setPaginationData(paginationData)
-      this.$refs.paginationInfo.setPaginationData(paginationData)
+      // this.$refs.paginationInfo.setPaginationData(paginationData)
     },
     onChangePage (page) {
       this.$refs.vuetable.changePage(page)
     },
     onClickEdit (data, index) {
       this.$router.push({name: 'UpsertCourse', params: { id: data.id }})
+    },
+    onCellClicked (data, field, event) {
+      console.log('cellClicked: ', field.name)
+      this.$refs.vuetable.toggleDetailRow(data.id)
     }
   }
 }
