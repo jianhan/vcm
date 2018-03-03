@@ -3,10 +3,10 @@ import {PASSPORT_API_URL} from '@/.env'
 const dropzone = {
   data () {
     return {
-      dropzoneOptions: {
+      baseDropzoneOptions: {
         uploadMultiple: true,
         parallelUploads: true,
-        maxFilesize: 0.001,
+        maxFilesize: 1,
         maxFiles: 2,
         acceptedFiles: 'image/*',
         addRemoveLinks: true,
@@ -43,7 +43,7 @@ const dropzone = {
       }
     },
     dismissDropzoneErrors (index) {
-      this.dropzoneErrors.splice(index, 1)
+      this.dropzoneErrors.splice(index, 0)
     }
   }
 }

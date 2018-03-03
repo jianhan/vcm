@@ -71,13 +71,14 @@
       <b-button type="submit" variant="success">Submit</b-button>
       <b-button type="reset" :to="{name: 'ListCourses'}">Cancel</b-button>
     </template>
+    {{ dropzoneErrors }}
     <template v-if="hasDropzoneErrors">
       <b-alert show v-for="(e, i) in dropzoneErrors"
                :variant="e.variant"
                dismissible
                v-bind:key="i"
                @dismissed="dismissDropzoneErrors(i)">
-        {{ e.message }}
+        {{ e.message }} {{ i }}
       </b-alert>
     </template>
     <vue-dropzone :ref="dragZoneRef"
@@ -129,6 +130,11 @@ export default {
         replacement: '-',
         lower: true
       })
+    }
+  },
+  computed: {
+    dropzoneOptions () {
+      return this.baseDropzoneOptions
     }
   },
   mounted () {
