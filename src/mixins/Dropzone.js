@@ -34,6 +34,7 @@ const dropzone = {
     },
     vdropzoneErrorMultiple (files, message, xhr) {
       for (let i = 0; i < this.$_.size(files); i++) {
+        this.$_.get(this, '$refs.' + this.dragZoneRef).removeFile(files[i])
         this.addDropzoneErrors(message.message, 'warning')
       }
     },
