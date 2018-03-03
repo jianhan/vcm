@@ -71,13 +71,16 @@
       <b-button type="submit" variant="success">Submit</b-button>
       <b-button type="reset" :to="{name: 'ListCourses'}">Cancel</b-button>
     </template>
-    <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions" />
-      <button v-show="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true" type="button">
-        Start upload
-      </button>
-      <button v-show="$refs.upload && $refs.upload.active" @click.prevent="$refs.upload.active = false" type="button">
-        Stop upload
-      </button>
+    {{ dropzoneErrors }}
+    <template v-if="hasDropzoneErrors">
+      <b-alert show v-for="(e, i) in dropzoneErrors" :variant="e.variant" dismissible v-bind:key="i" @dismissed="dismissDropzoneErrors(i)">
+        {{ e.message }}
+      </b-alert>
+    </template>
+    <vue-dropzone ref="coursesVueDropzone"
+                  id="coursesVueDropzone"
+                  :options="dropzoneOptions"
+                  @vdropzone-error-multiple="vdropzoneErrorMultiple"/>
   </b-form>
 </template>
 
@@ -86,6 +89,7 @@ import {http, errorMsg} from '@/auth/Http'
 import {VueEditor} from 'vue2-editor'
 import alertMixin from '@/mixins/Alert'
 import authMixin from '@/mixins/Auth'
+import dropzoneMixin from '@/mixins/Dropzone'
 import validationErrorsMixin from '@/mixins/ValidationErrors'
 import validationErrors from '@/components/ValidationErrors'
 import slugify from 'slugify'
@@ -96,7 +100,7 @@ import 'vue2-dropzone/dist/vue2Dropzone.css'
 
 export default {
   name: 'upsert-course-form',
-  mixins: [alertMixin, validationErrorsMixin, authMixin],
+  mixins: [alertMixin, validationErrorsMixin, authMixin, dropzoneMixin],
   components: {
     VueEditor,
     validationErrors,
@@ -113,16 +117,6 @@ export default {
       },
       dateTimePickerFormat: {},
       loading: false
-    }
-  },
-  computed: {
-    dropzoneOptions () {
-      return {
-        url: 'http://courses-management.localhost/api/v1/upload',
-        thumbnailWidth: 150,
-        maxFilesize: 0.5,
-        headers: this.authHeader.headers
-      }
     }
   },
   watch: {
