@@ -3,7 +3,7 @@
     <div class="ui form">
       <div class="inline field">
         <label>Search for:</label>
-        <input type="text" v-model="filterText" class="three wide column" @keyup.enter="doFilter" placeholder="name, nickname, or email">
+        <input type="text" v-model="query" class="three wide column" @keyup.enter="doFilter" placeholder="name, nickname, or email">
         <button class="ui primary button" @click="doFilter">Go</button>
         <button class="ui button" @click="resetFilter">Reset</button>
       </div>
@@ -15,15 +15,15 @@
 export default {
   data () {
     return {
-      filterText: ''
+      query: ''
     }
   },
   methods: {
     doFilter () {
-      this.$events.fire('filter-set', this.filterText)
+      this.$events.fire('filter-set', this.query)
     },
     resetFilter () {
-      this.filterText = ''
+      this.query = ''
       this.$events.fire('filter-reset')
     }
   }

@@ -71,6 +71,13 @@
       <b-button type="submit" variant="success">Submit</b-button>
       <b-button type="reset" :to="{name: 'ListCourses'}">Cancel</b-button>
     </template>
+    <vue-dropzone ref="myVueDropzone" id="dropzone" :options="dropzoneOptions" />
+      <button v-show="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true" type="button">
+        Start upload
+      </button>
+      <button v-show="$refs.upload && $refs.upload.active" @click.prevent="$refs.upload.active = false" type="button">
+        Stop upload
+      </button>
   </b-form>
 </template>
 
@@ -78,19 +85,23 @@
 import {http, errorMsg} from '@/auth/Http'
 import {VueEditor} from 'vue2-editor'
 import alertMixin from '@/mixins/Alert'
+import authMixin from '@/mixins/Auth'
 import validationErrorsMixin from '@/mixins/ValidationErrors'
 import validationErrors from '@/components/ValidationErrors'
 import slugify from 'slugify'
 import {DateTime} from 'luxon'
 import {RadarSpinner} from 'epic-spinners'
+import vue2Dropzone from 'vue2-dropzone'
+import 'vue2-dropzone/dist/vue2Dropzone.css'
 
 export default {
   name: 'upsert-course-form',
-  mixins: [alertMixin, validationErrorsMixin],
+  mixins: [alertMixin, validationErrorsMixin, authMixin],
   components: {
     VueEditor,
     validationErrors,
-    RadarSpinner
+    RadarSpinner,
+    vueDropzone: vue2Dropzone
   },
   props: {
     'title': String
@@ -102,6 +113,16 @@ export default {
       },
       dateTimePickerFormat: {},
       loading: false
+    }
+  },
+  computed: {
+    dropzoneOptions () {
+      return {
+        url: 'http://courses-management.localhost/api/v1/upload',
+        thumbnailWidth: 150,
+        maxFilesize: 0.5,
+        headers: this.authHeader.headers
+      }
     }
   },
   watch: {

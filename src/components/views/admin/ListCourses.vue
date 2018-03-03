@@ -151,9 +151,9 @@ export default {
         })
       }
     },
-    onFilterSet (filterText) {
+    onFilterSet (query) {
       this.searchParams = {
-        'filter': filterText
+        'query': query
       }
       Vue.nextTick(() => this.$refs.vuetable.refresh())
     },
