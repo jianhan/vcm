@@ -26,8 +26,9 @@ const dropzone = {
     clearDropzoneErrors () {
       this.dropzoneErrors = []
     },
-    addDropzoneErrors (message, variant) {
+    addDropzoneErrors (file, message, variant) {
       this.dropzoneErrors.push({
+        file,
         message,
         variant
       })
@@ -39,11 +40,13 @@ const dropzone = {
       }
       for (let i = 0; i < this.$_.size(files); i++) {
         this.$_.get(this, '$refs.' + this.dragZoneRef).removeFile(files[i])
-        this.addDropzoneErrors(files[i].name + ' : ' + msg, 'warning')
+        this.addDropzoneErrors(files[i], files[i].name + ' : ' + msg, 'warning')
       }
     },
-    dismissDropzoneErrors (index) {
-      this.dropzoneErrors.splice(index, 0)
+    dismissDropzoneErrors (i) {
+      console.log('BEFORE', this.dropzoneErrors)
+      this.dropzoneErrors.splice(i, 1)
+      console.log('AFTER', this.dropzoneErrors)
     }
   }
 }

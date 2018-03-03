@@ -71,15 +71,15 @@
       <b-button type="submit" variant="success">Submit</b-button>
       <b-button type="reset" :to="{name: 'ListCourses'}">Cancel</b-button>
     </template>
-    {{ dropzoneErrors }}
     <template v-if="hasDropzoneErrors">
-      <b-alert show v-for="(e, i) in dropzoneErrors"
-               :variant="e.variant"
-               dismissible
-               v-bind:key="i"
-               @dismissed="dismissDropzoneErrors(i)">
-        {{ e.message }} {{ i }}
-      </b-alert>
+      <div class="alert alert-warning alert-dismissible fade show"
+           role="alert"
+           v-for="(e, i) in dropzoneErrors">
+        <strong>{{ e.file.name }}</strong> {{ e.message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="dismissDropzoneErrors(i)">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
     </template>
     <vue-dropzone :ref="dragZoneRef"
                   id="coursesVueDropzone"
