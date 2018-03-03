@@ -6,7 +6,7 @@ const dropzone = {
       dropzoneOptions: {
         uploadMultiple: true,
         parallelUploads: true,
-        maxFilesize: 1.5,
+        maxFilesize: 0.001,
         maxFiles: 2,
         acceptedFiles: 'image/*',
         addRemoveLinks: true,
@@ -33,9 +33,13 @@ const dropzone = {
       })
     },
     vdropzoneErrorMultiple (files, message, xhr) {
+      let msg = message
+      if (!this.$_.isUndefined(xhr)) {
+        msg = message.message
+      }
       for (let i = 0; i < this.$_.size(files); i++) {
         this.$_.get(this, '$refs.' + this.dragZoneRef).removeFile(files[i])
-        this.addDropzoneErrors(message.message, 'warning')
+        this.addDropzoneErrors(files[i].name + ' : ' + msg, 'warning')
       }
     },
     dismissDropzoneErrors (index) {
