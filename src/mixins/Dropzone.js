@@ -26,27 +26,36 @@ const dropzone = {
     clearDropzoneErrors () {
       this.dropzoneErrors = []
     },
-    addDropzoneErrors (file, message, variant) {
+    addDropzoneErrors (message, variant) {
       this.dropzoneErrors.push({
-        file,
         message,
         variant
       })
     },
     vdropzoneErrorMultiple (files, message, xhr) {
-      let msg = message
       if (!this.$_.isUndefined(xhr)) {
-        msg = message.message
+        let msg = message
+        let rsp = JSON.parse(xhr.response)
+        if (xhr.status === 422) {
+          msg = 'File validation errors'
+          this.$_.each(rsp.errors, e => {
+            msg += '\n'+e[0]
+          })
+        } else {
+          msg = message.message
+        }
+        this.addDropzoneErrors(msg, 'warning')
+      } else {
+        for (let i = 0; i < this.$_.size(files); i++) {
+          this.addDropzoneErrors(message, 'warning')
+        }
       }
       for (let i = 0; i < this.$_.size(files); i++) {
         this.$_.get(this, '$refs.' + this.dragZoneRef).removeFile(files[i])
-        this.addDropzoneErrors(files[i], files[i].name + ' : ' + msg, 'warning')
       }
     },
     dismissDropzoneErrors (i) {
-      console.log('BEFORE', this.dropzoneErrors)
       this.dropzoneErrors.splice(i, 1)
-      console.log('AFTER', this.dropzoneErrors)
     }
   }
 }

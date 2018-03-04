@@ -75,7 +75,7 @@
       <div class="alert alert-warning alert-dismissible fade show"
            role="alert"
            v-for="(e, i) in dropzoneErrors">
-        <strong>{{ e.file.name }}</strong> {{ e.message }}
+        {{ e.message }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="dismissDropzoneErrors(i)">
           <span aria-hidden="true">&times;</span>
         </button>
