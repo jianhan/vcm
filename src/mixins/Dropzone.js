@@ -39,7 +39,7 @@ const dropzone = {
         if (xhr.status === 422) {
           msg = 'File validation errors'
           this.$_.each(rsp.errors, e => {
-            msg += '\n'+e[0]
+            msg += '\n' + e[0]
           })
         } else {
           msg = message.message

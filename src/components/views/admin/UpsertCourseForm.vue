@@ -74,6 +74,7 @@
     <template v-if="hasDropzoneErrors">
       <div class="alert alert-warning alert-dismissible fade show"
            role="alert"
+           v-bind:key="i"
            v-for="(e, i) in dropzoneErrors">
         {{ e.message }}
         <button type="button" class="close" data-dismiss="alert" aria-label="Close" @click="dismissDropzoneErrors(i)">
@@ -84,7 +85,10 @@
     <vue-dropzone :ref="dragZoneRef"
                   id="coursesVueDropzone"
                   :options="dropzoneOptions"
-                  @vdropzone-error-multiple="vdropzoneErrorMultiple"/>
+                  @vdropzone-error-multiple="vdropzoneErrorMultiple"
+                  @vdropzone-success="vdropzoneSuccess"
+                  @vdropzone-sending="sendingCourseFiles"
+                  @vdropzone-removed-file="vdropzoneRemovedFile"/>
   </b-form>
 </template>
 
@@ -179,6 +183,16 @@ export default {
           this.setVErrors(e.response.data.errors)
         }
       })
+    },
+    sendingCourseFiles (file, xhr, formData) {
+      formData.append('dir', 'courses/')
+      formData.append('uuid', file.upload.uuid)
+    },
+    vdropzoneSuccess (file, response) {
+      // console.log(file, response)
+    },
+    vdropzoneRemovedFile (file, error, xhr) {
+      console.log(file, error, xhr)
     }
   }
 }
