@@ -89,6 +89,7 @@
                   @vdropzone-success="vdropzoneSuccess"
                   @vdropzone-sending="sendingCourseFiles"
                   @vdropzone-removed-file="vdropzoneRemovedFile"/>
+    {{ dropzoneFiles }}
   </b-form>
 </template>
 
@@ -187,9 +188,6 @@ export default {
     sendingCourseFiles (file, xhr, formData) {
       formData.append('dir', 'courses/')
       formData.append('uuid', file.upload.uuid)
-    },
-    vdropzoneSuccess (file, response) {
-      // console.log(file, response)
     },
     vdropzoneRemovedFile (file, error, xhr) {
       console.log(file, error, xhr)

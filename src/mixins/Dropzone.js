@@ -1,4 +1,5 @@
 import {PASSPORT_API_URL} from '@/.env'
+import Vue from 'vue'
 
 const dropzone = {
   data () {
@@ -13,7 +14,8 @@ const dropzone = {
         thumbnailWidth: 150,
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('access_token')}
       },
-      dropzoneErrors: []
+      dropzoneErrors: [],
+      dropzoneFiles: {}
     }
   },
   computed: {
@@ -37,7 +39,6 @@ const dropzone = {
         let rsp = JSON.parse(xhr.response)
         if (xhr.status === 422) {
           msg = 'File validation errors'
-          alert(123)
           this.$_.each(rsp.errors, e => {
             msg += '\n' + e[0]
           })
@@ -52,6 +53,9 @@ const dropzone = {
     },
     dismissDropzoneErrors (i) {
       this.dropzoneErrors.splice(i, 1)
+    },
+    vdropzoneSuccess (file, response) {
+      Vue.set(this.dropzoneFiles, response.uuid, response.url)
     }
   }
 }

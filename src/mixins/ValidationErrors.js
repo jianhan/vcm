@@ -2,6 +2,7 @@ const validationErrors = {
   data: function () {
     return {
       vErrors: {}
+
     }
   },
   computed: {
