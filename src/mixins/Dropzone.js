@@ -4,11 +4,10 @@ const dropzone = {
   data () {
     return {
       baseDropzoneOptions: {
-        uploadMultiple: true,
+        uploadMultiple: false,
         parallelUploads: true,
-        maxFilesize: 1,
-        maxFiles: 2,
-        acceptedFiles: 'image/*',
+        // maxFilesize: 1,
+        // acceptedFiles: 'image/*',
         addRemoveLinks: true,
         url: PASSPORT_API_URL + 'upload',
         thumbnailWidth: 150,
@@ -32,12 +31,13 @@ const dropzone = {
         variant
       })
     },
-    vdropzoneErrorMultiple (files, message, xhr) {
+    vdropzoneError (file, message, xhr) {
       if (!this.$_.isUndefined(xhr)) {
         let msg = message
         let rsp = JSON.parse(xhr.response)
         if (xhr.status === 422) {
           msg = 'File validation errors'
+          alert(123)
           this.$_.each(rsp.errors, e => {
             msg += '\n' + e[0]
           })
@@ -46,13 +46,9 @@ const dropzone = {
         }
         this.addDropzoneErrors(msg, 'warning')
       } else {
-        for (let i = 0; i < this.$_.size(files); i++) {
-          this.addDropzoneErrors(message, 'warning')
-        }
+        this.addDropzoneErrors(message, 'warning')
       }
-      for (let i = 0; i < this.$_.size(files); i++) {
-        this.$_.get(this, '$refs.' + this.dragZoneRef).removeFile(files[i])
-      }
+      this.$_.get(this, '$refs.' + this.dragZoneRef).removeFile(file)
     },
     dismissDropzoneErrors (i) {
       this.dropzoneErrors.splice(i, 1)

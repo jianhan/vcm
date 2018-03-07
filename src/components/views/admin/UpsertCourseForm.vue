@@ -85,7 +85,7 @@
     <vue-dropzone :ref="dragZoneRef"
                   id="coursesVueDropzone"
                   :options="dropzoneOptions"
-                  @vdropzone-error-multiple="vdropzoneErrorMultiple"
+                  @vdropzone-error="vdropzoneError"
                   @vdropzone-success="vdropzoneSuccess"
                   @vdropzone-sending="sendingCourseFiles"
                   @vdropzone-removed-file="vdropzoneRemovedFile"/>
