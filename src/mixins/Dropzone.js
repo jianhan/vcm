@@ -15,7 +15,7 @@ const dropzone = {
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('access_token')}
       },
       dropzoneErrors: [],
-      dropzoneFiles: {}
+      dropzoneFiles: []
     }
   },
   computed: {
@@ -55,7 +55,16 @@ const dropzone = {
       this.dropzoneErrors.splice(i, 1)
     },
     vdropzoneSuccess (file, response) {
-      Vue.set(this.dropzoneFiles, response.uuid, response.url)
+      this.dropzoneFiles.push(response)
+    },
+    vdropzoneRemovedFile (file, error, xhr) {
+      this.dropzoneFiles = this.$_.filter(this.dropzoneFiles, v => {
+        return v.uuid !== file.upload.uuid
+      })
+    },
+    sendingCourseFiles (file, xhr, formData) {
+      formData.append('dir', 'courses/')
+      formData.append('uuid', file.upload.uuid)
     }
   }
 }

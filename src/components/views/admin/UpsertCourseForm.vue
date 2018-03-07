@@ -185,13 +185,6 @@ export default {
         }
       })
     },
-    sendingCourseFiles (file, xhr, formData) {
-      formData.append('dir', 'courses/')
-      formData.append('uuid', file.upload.uuid)
-    },
-    vdropzoneRemovedFile (file, error, xhr) {
-      console.log(file, error, xhr)
-    }
   }
 }
 </script>
